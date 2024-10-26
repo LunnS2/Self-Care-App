@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import SideBar from "@/components/side-bar";
 
 export const metadata: Metadata = {
   title: "Self-Care-App",
