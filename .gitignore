@@ -41,3 +41,5 @@ dist/
 # Linting/formatting
 .eslintcache
 .prettiercache
+
+.env.local
