@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import SideBar from "@/components/side-bar";
+import ConvexClientProvider from "@/providers/convex-client-provider";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Self-Care-App",
@@ -16,15 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-        <SideBar />
+        <ClerkProvider dynamic>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <ConvexClientProvider>
+              {children}
+            </ConvexClientProvider>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
