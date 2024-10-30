@@ -3,7 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import SideBar from "@/components/side-bar";
 import ConvexClientProvider from "@/providers/convex-client-provider";
-import { ClerkProvider, UserButton } from "@clerk/nextjs";
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton  } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Self-Care-App",
@@ -19,9 +19,23 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ClerkProvider dynamic>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             <ConvexClientProvider>
               {children}
+              <SideBar />
+              <header className="absolute top-0 right-0 p-2">
+                <SignedOut>
+                  <SignInButton />
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </header>
             </ConvexClientProvider>
           </ThemeProvider>
         </ClerkProvider>
