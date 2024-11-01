@@ -1,3 +1,5 @@
+//self-care-app\src\components\side-bar.tsx
+
 "use client"
 
 import React from "react";
@@ -10,12 +12,22 @@ import ChallengeIcon from "@mui/icons-material/EmojiEvents";
 import GratitudeIcon from "@mui/icons-material/Favorite";
 import MeditationIcon from "@mui/icons-material/SelfImprovement";
 import JournalIcon from "@mui/icons-material/Book";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function SideBar() {
+  //Practice to prevent hydratation issues
+  const [isMounted, setIsMounted] = useState(false);
+
+  // This effect will run only on the client
   useEffect(() => {
-    // Forces a re-render on the client, preventing issues
+    setIsMounted(true);
   }, []);
+
+  // Avoid rendering during SSR
+  if (!isMounted) {
+    return null; // null, or a loading indicator
+  }
+
   return (
     <aside className="fixed left-0 top-0 w-16 h-screen bg-gray-900 flex flex-col items-center py-6 transition-all duration-300 hover:w-24 md:w-20 md:hover:w-24 shadow-lg">
       {/* Logo or Home Link */}

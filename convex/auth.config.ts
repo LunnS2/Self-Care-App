@@ -1,3 +1,5 @@
+//self-care-app\convex\auth.config.ts
+
 const authConfig = {
   providers: [
     {

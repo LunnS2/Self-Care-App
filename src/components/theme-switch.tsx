@@ -1,4 +1,6 @@
-"use client"; // This ensures the component is treated as a client component
+//self-care-app\src\components\theme-switch.tsx
+
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,6 +14,7 @@ import { useEffect, useState } from "react";
 
 const ThemeSwitch = () => {
   const { setTheme, resolvedTheme } = useTheme();
+  //Practice to prevent hydratation issues
   const [isMounted, setIsMounted] = useState(false);
 
   // This effect will run only on the client
@@ -21,9 +24,8 @@ const ThemeSwitch = () => {
 
   // Avoid rendering during SSR
   if (!isMounted) {
-    return null; // Or a loading indicator if preferred
+    return null; // null, or a loading indicator
   }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="bg-transparent relative">
