@@ -1,5 +1,3 @@
-// self-care-app/convex/tasks.ts
-
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
@@ -9,6 +7,7 @@ export const addTask = mutation({
     title: v.string(),
     content: v.string(),
     createdBy: v.id("users"),
+    recurring: v.boolean(), // Added recurring argument
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -18,18 +17,22 @@ export const addTask = mutation({
 
     const user = await ctx.db
       .query("users")
-      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .withIndex("by_tokenIdentifier", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier)
+      )
       .unique();
 
     if (!user) {
       throw new ConvexError("User not found");
     }
 
+    // Insert task with recurring status
     await ctx.db.insert("tasks", {
       title: args.title,
       content: args.content,
       completed: false,
       createdBy: args.createdBy,
+      recurring: args.recurring, // Store the recurring value
     });
   },
 });
@@ -66,7 +69,8 @@ export const completeTask = mutation({
 
     const task = await ctx.db
       .query("tasks")
-      .filter((q) => q.eq(q.field("createdBy"), identity.tokenIdentifier))
+      .withIndex("by_createdBy", (q) => q.eq("createdBy", identity.tokenIdentifier))
+      .filter((q) => q.eq(q.field("_id"), args.taskId))
       .first();
 
     if (!task) {
@@ -90,7 +94,8 @@ export const deleteTask = mutation({
 
     const task = await ctx.db
       .query("tasks")
-      .filter((q) => q.eq(q.field("createdBy"), identity.tokenIdentifier))
+      .withIndex("by_createdBy", (q) => q.eq("createdBy", identity.tokenIdentifier))
+      .filter((q) => q.eq(q.field("_id"), args.taskId))
       .first();
 
     if (!task) {

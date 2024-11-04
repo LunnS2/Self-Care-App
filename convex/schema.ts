@@ -16,6 +16,7 @@ export default defineSchema({
 		content: v.string(),
 		completed: v.boolean(),
 		createdBy: v.string(),
+		recurring: v.boolean()
 	}).index("by_createdBy", ["createdBy"]),
 	journal: defineTable({
 		title: v.string(),
