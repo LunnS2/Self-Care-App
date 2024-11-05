@@ -1,11 +1,54 @@
-import React from "react";
+// self-care-app/src/app/create-task/page.tsx
 
-function CreateTask() {
+"use client";
+
+import React from "react";
+import TaskForm from "@/components/task-form";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { useRouter } from "next/navigation";
+
+const CreateTaskPage = () => {
+
+  const addTaskMutation = useMutation(api.tasks.addTask);
+  const currentUser = useQuery(api.users.getMe)
+  const router = useRouter();
+
+  const handleTaskSubmit = async (
+    title: string,
+    content: string,
+    recurring: boolean
+  ) => {
+    if (!currentUser) {
+      alert("You must be logged in to create a task.");
+      return;
+    }
+
+    try {
+      await addTaskMutation({
+        title,
+        content,
+        createdBy: currentUser._id,
+        recurring,
+      });
+      alert("Task created successfully!");
+      router.push("/tasks"); // Redirect to tasks page after creation
+    } catch (error) {
+      console.error("Error creating task:", error);
+      alert("Failed to create task.");
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">
-      CreateTask
+    <div className="flex justify-center mt-10">
+      <div className="w-full max-w-md">
+        <h1 className="text-2xl font-semibold mb-4 text-center">
+          Create New Task
+        </h1>
+        <TaskForm onSubmit={handleTaskSubmit} />
+      </div>
     </div>
   );
-}
+};
 
-export default CreateTask;
+export default CreateTaskPage;
