@@ -1,0 +1,252 @@
+[
+  {
+    "category": "Mental Health",
+    "difficulty": "easy",
+    "description": "Take a 10-minute walk outside to clear your mind."
+  },
+  {
+    "category": "Food",
+    "difficulty": "easy",
+    "description": "Eat a healthy breakfast with fruits or oats."
+  },
+  {
+    "category": "Social",
+    "difficulty": "easy",
+    "description": "Send a message to a friend you haven’t spoken to in a while."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "easy",
+    "description": "Read for 15 minutes from a book or article on personal growth."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "easy",
+    "description": "Practice deep breathing exercises for 5 minutes."
+  },
+  {
+    "category": "Food",
+    "difficulty": "easy",
+    "description": "Drink at least 2 liters of water today."
+  },
+  {
+    "category": "Social",
+    "difficulty": "easy",
+    "description": "Compliment someone or give them positive feedback."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "easy",
+    "description": "Write down three things you are grateful for today."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "easy",
+    "description": "Do a 5-minute meditation session to relax your mind."
+  },
+  {
+    "category": "Food",
+    "difficulty": "easy",
+    "description": "Include a vegetable in every meal today."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "medium",
+    "description": "Spend 20 minutes journaling your thoughts or feelings."
+  },
+  {
+    "category": "Food",
+    "difficulty": "medium",
+    "description": "Try a new healthy recipe today, focusing on whole foods."
+  },
+  {
+    "category": "Social",
+    "difficulty": "medium",
+    "description": "Call a friend or family member for a 20-minute conversation."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "medium",
+    "description": "Set a small personal goal and work towards it for 30 minutes."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "medium",
+    "description": "Practice mindfulness for 15 minutes, focusing on your breath."
+  },
+  {
+    "category": "Food",
+    "difficulty": "medium",
+    "description": "Cook a meal without using processed foods or takeout."
+  },
+  {
+    "category": "Social",
+    "difficulty": "medium",
+    "description": "Attend a virtual meetup or social gathering with friends or colleagues."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "medium",
+    "description": "Watch a TED Talk or educational video to expand your knowledge."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "medium",
+    "description": "Take a 30-minute break to disconnect from screens and relax."
+  },
+  {
+    "category": "Food",
+    "difficulty": "medium",
+    "description": "Eat at least one fruit and one vegetable in each of your meals today."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "hard",
+    "description": "Try a 30-minute yoga or stretching session to relax your body and mind."
+  },
+  {
+    "category": "Food",
+    "difficulty": "hard",
+    "description": "Follow a clean eating plan for an entire day, avoiding processed foods and sugar."
+  },
+  {
+    "category": "Social",
+    "difficulty": "hard",
+    "description": "Plan a face-to-face meeting with someone you haven’t seen in a while."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "hard",
+    "description": "Spend an hour learning a new skill or language."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "hard",
+    "description": "Perform a digital detox for a whole day, avoiding social media and emails."
+  },
+  {
+    "category": "Food",
+    "difficulty": "hard",
+    "description": "Prepare a completely plant-based meal for the day."
+  },
+  {
+    "category": "Social",
+    "difficulty": "hard",
+    "description": "Volunteer for a cause you believe in or help someone in need."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "hard",
+    "description": "Take on a personal project and dedicate a few hours to making progress."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "hard",
+    "description": "Engage in a 30-minute self-reflection or introspection session, journaling your thoughts."
+  },
+  {
+    "category": "Food",
+    "difficulty": "hard",
+    "description": "Fast for 12-16 hours, depending on your comfort level, and focus on mindful eating when you break your fast."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "easy",
+    "description": "Take 5 minutes to practice gratitude, listing things you’re thankful for."
+  },
+  {
+    "category": "Food",
+    "difficulty": "easy",
+    "description": "Try a healthy smoothie as a snack or breakfast."
+  },
+  {
+    "category": "Social",
+    "difficulty": "easy",
+    "description": "Smile at someone today, whether it’s a stranger or a friend."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "easy",
+    "description": "Write down one thing you can do today to improve yourself."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "medium",
+    "description": "Spend 10 minutes doing a creative activity like drawing or painting."
+  },
+  {
+    "category": "Food",
+    "difficulty": "medium",
+    "description": "Try cooking with a new vegetable or grain that you’ve never used before."
+  },
+  {
+    "category": "Social",
+    "difficulty": "medium",
+    "description": "Send a thoughtful message to someone to check in on them."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "medium",
+    "description": "Commit to a week of no procrastination and focus on completing tasks as soon as possible."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "medium",
+    "description": "Do a digital declutter by organizing your devices and unsubscribing from unwanted emails."
+  },
+  {
+    "category": "Food",
+    "difficulty": "medium",
+    "description": "Have a meatless day by focusing on plant-based meals."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "hard",
+    "description": "Start a habit tracker and track something new you want to improve in your life."
+  },
+  {
+    "category": "Food",
+    "difficulty": "hard",
+    "description": "Try a full day of intermittent fasting and focus on a healthy eating window."
+  },
+  {
+    "category": "Social",
+    "difficulty": "hard",
+    "description": "Join a community group or online course and engage in meaningful conversations."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "hard",
+    "description": "Write a personal mission statement to help guide your actions and decisions."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "hard",
+    "description": "Do a social media cleanse for the entire day or week, focusing on real-life connections."
+  },
+  {
+    "category": "Food",
+    "difficulty": "hard",
+    "description": "Prepare a meal plan for the whole week to ensure healthy eating habits."
+  },
+  {
+    "category": "Social",
+    "difficulty": "hard",
+    "description": "Spend a day with family or friends, actively listening and engaging in meaningful conversations."
+  },
+  {
+    "category": "Self-Development",
+    "difficulty": "hard",
+    "description": "Set a long-term goal and take the first significant step toward achieving it today."
+  },
+  {
+    "category": "Mental Health",
+    "difficulty": "hard",
+    "description": "Try a 45-minute mindfulness or meditation session to clear your mind."
+  },
+  {
+    "category": "Food",
+    "difficulty": "hard",
+    "description": "Eliminate all processed sugar from your diet for a full day and stick to natural sweeteners."
+  }
+]
