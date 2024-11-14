@@ -23,6 +23,5 @@ export default defineSchema({
 		content: v.string(),
 		createdBy: v.string(),
   	createdAt: v.number(),
-		updatedAt: v.number(),
 	}).index("by_createdBy", ["createdBy"])
 });
