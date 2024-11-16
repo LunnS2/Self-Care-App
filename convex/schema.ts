@@ -21,7 +21,7 @@ export default defineSchema({
 	journal: defineTable({
 		title: v.string(),
 		content: v.string(),
-		createdBy: v.string(),
-  	createdAt: v.number(),
+		createdBy: v.optional(v.string()),
+  	createdAt: v.optional(v.number()),
 	}).index("by_createdBy", ["createdBy"])
 });

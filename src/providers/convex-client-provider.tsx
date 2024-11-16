@@ -1,3 +1,5 @@
+//self-care-app\src\providers\convex-client-provider.tsx
+
 "use client";
 import { ReactNode } from "react";
 import { ConvexReactClient } from "convex/react";

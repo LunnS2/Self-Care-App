@@ -1,3 +1,5 @@
+//self-care-app\src\middleware.tsx
+
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
 // Middleware function to protect routes
