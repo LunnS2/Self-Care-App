@@ -6,9 +6,9 @@ import { mutation, query } from "./_generated/server";
 export const addNote = mutation({
   args: {
     title: v.string(),
-		content: v.string(),
-		createdBy: v.id("users"),
-  	createdAt: v.number(),
+    content: v.string(),
+    createdBy: v.id("users"),
+    createdAt: v.number(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -24,17 +24,18 @@ export const addNote = mutation({
       .unique();
 
     if (!user) {
-      throw new ConvexError("User not found");
+      throw new ConvexError("User not found.");
     }
 
     await ctx.db.insert("journal", {
       title: args.title,
       content: args.content,
-      createdBy: args.createdBy,
+      createdBy: user._id,
       createdAt: args.createdAt,
     });
   },
 });
+
 
 export const getNotes = query({
   args: {
@@ -64,13 +65,20 @@ export const deleteNote = mutation({
       throw new ConvexError("You must be logged in to delete notes.");
     }
 
-    const task = await ctx.db
-      .query("journal")
-      .withIndex("by_createdBy", (q) => q.eq("createdBy", identity.tokenIdentifier))
-      .filter((q) => q.eq(q.field("_id"), args.noteId))
-      .first();
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier)
+      )
+      .unique();
 
-    if (!task) {
+    if (!user) {
+      throw new ConvexError("User not found.");
+    }
+
+    const note = await ctx.db.get(args.noteId);
+
+    if (!note || note.createdBy !== user._id) {
       throw new ConvexError("Note not found or user is unauthorized.");
     }
 

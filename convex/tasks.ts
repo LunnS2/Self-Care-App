@@ -7,7 +7,7 @@ export const addTask = mutation({
     title: v.string(),
     content: v.string(),
     createdBy: v.id("users"),
-    recurring: v.boolean(), // Added recurring argument
+    recurring: v.boolean(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -23,19 +23,19 @@ export const addTask = mutation({
       .unique();
 
     if (!user) {
-      throw new ConvexError("User not found");
+      throw new ConvexError("User not found.");
     }
 
-    // Insert task with recurring status
     await ctx.db.insert("tasks", {
       title: args.title,
       content: args.content,
       completed: false,
-      createdBy: args.createdBy,
-      recurring: args.recurring, // Store the recurring value
+      createdBy: user._id,
+      recurring: args.recurring,
     });
   },
 });
+
 
 // Retrieve All Tasks for a User
 export const getTasks = query({
@@ -67,19 +67,27 @@ export const completeTask = mutation({
       throw new ConvexError("You must be logged in to complete tasks.");
     }
 
-    const task = await ctx.db
-      .query("tasks")
-      .withIndex("by_createdBy", (q) => q.eq("createdBy", identity.tokenIdentifier))
-      .filter((q) => q.eq(q.field("_id"), args.taskId))
-      .first();
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier)
+      )
+      .unique();
 
-    if (!task) {
+    if (!user) {
+      throw new ConvexError("User not found.");
+    }
+
+    const task = await ctx.db.get(args.taskId);
+
+    if (!task || task.createdBy !== user._id) {
       throw new ConvexError("Task not found or user is unauthorized.");
     }
 
     await ctx.db.patch(args.taskId, { completed: true });
   },
 });
+
 
 // Delete a Task
 export const deleteTask = mutation({
@@ -92,13 +100,20 @@ export const deleteTask = mutation({
       throw new ConvexError("You must be logged in to delete tasks.");
     }
 
-    const task = await ctx.db
-      .query("tasks")
-      .withIndex("by_createdBy", (q) => q.eq("createdBy", identity.tokenIdentifier))
-      .filter((q) => q.eq(q.field("_id"), args.taskId))
-      .first();
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier)
+      )
+      .unique();
 
-    if (!task) {
+    if (!user) {
+      throw new ConvexError("User not found.");
+    }
+
+    const task = await ctx.db.get(args.taskId);
+
+    if (!task || task.createdBy !== user._id) {
       throw new ConvexError("Task not found or user is unauthorized.");
     }
 

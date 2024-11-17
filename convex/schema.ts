@@ -11,17 +11,19 @@ export default defineSchema({
 		tokenIdentifier: v.string(),
 		isOnline: v.boolean(),
 	}).index("by_tokenIdentifier", ["tokenIdentifier"]),
+
 	tasks: defineTable({
 		title: v.string(),
 		content: v.string(),
 		completed: v.boolean(),
-		createdBy: v.string(),
-		recurring: v.boolean()
+		createdBy: v.id("users"),
+		recurring: v.boolean(),
 	}).index("by_createdBy", ["createdBy"]),
+
 	journal: defineTable({
 		title: v.string(),
 		content: v.string(),
-		createdBy: v.optional(v.string()),
-  	createdAt: v.optional(v.number()),
-	}).index("by_createdBy", ["createdBy"])
+		createdBy: v.optional(v.id("users")),
+		createdAt: v.optional(v.number()),
+	}).index("by_createdBy", ["createdBy"]),
 });

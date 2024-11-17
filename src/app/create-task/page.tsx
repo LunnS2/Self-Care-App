@@ -7,11 +7,11 @@ import TaskForm from "@/components/task-form";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
+import { Id } from "../../../convex/_generated/dataModel"; // Import Convex Id type
 
 const CreateTaskPage = () => {
-
   const addTaskMutation = useMutation(api.tasks.addTask);
-  const currentUser = useQuery(api.users.getMe)
+  const currentUser = useQuery(api.users.getMe);
   const router = useRouter();
 
   const handleTaskSubmit = async (
@@ -24,15 +24,18 @@ const CreateTaskPage = () => {
       return;
     }
 
+    // Convert Clerk's user ID to Convex's expected format
+    const userId: Id<"users"> = `users/${currentUser._id}` as Id<"users">;
+
     try {
       await addTaskMutation({
         title,
         content,
-        createdBy: currentUser._id,
+        createdBy: userId, // converted userId to the mutation
         recurring,
       });
       alert("Task created successfully!");
-      router.push("/tasks"); // Redirect to tasks page after creation
+      router.push("/tasks");
     } catch (error) {
       console.error("Error creating task:", error);
       alert("Failed to create task.");
