@@ -48,11 +48,11 @@ const Journal = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">Journal</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6 md:p-12">
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">Journal</h1>
       <form
         onSubmit={handleSendTextMsg}
-        className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
+        className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg"
       >
         <div className="mb-4">
           <label

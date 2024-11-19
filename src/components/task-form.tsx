@@ -1,4 +1,4 @@
-//self-care-app\src\components\task-form.tsx
+// self-care-app\src\components\task-form.tsx
 
 "use client";
 
@@ -26,39 +26,26 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 p-4 bg-white rounded shadow-md"
-    >
+    <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-lg">
       <div>
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Task Title
-        </label>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Task Title</label>
         <input
           id="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 block w-full p-2 border rounded-md"
+          className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:outline-none"
           required
         />
       </div>
 
       <div>
-        <label
-          htmlFor="content"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Task Content
-        </label>
+        <label htmlFor="content" className="block text-sm font-medium text-gray-700">Task Content</label>
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="mt-1 block w-full p-2 border rounded-md"
+          className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:outline-none"
           required
         />
       </div>
@@ -71,17 +58,12 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
           onChange={(e) => setRecurring(e.target.checked)}
           className="mr-2"
         />
-        <label
-          htmlFor="recurring"
-          className="text-sm font-medium text-gray-700"
-        >
-          Recurring Task
-        </label>
+        <label htmlFor="recurring" className="text-sm font-medium text-gray-700">Recurring Task</label>
       </div>
 
       <button
         type="submit"
-        className="w-full bg-gray-900 text-white py-2 rounded hover:bg-gray-700"
+        className="w-full bg-teal-500 text-white py-2 rounded hover:bg-teal-600 focus:outline-none"
       >
         Add Task
       </button>

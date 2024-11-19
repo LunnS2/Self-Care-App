@@ -1,5 +1,7 @@
 // self-care-app/src/app/gratitude-log/page.tsx
+
 "use client";
+
 import React, { useState, useEffect } from 'react';
 
 interface GratitudeItem {
@@ -50,23 +52,29 @@ const GratitudeLog: React.FC = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8 overflow-hidden">
-      <h1 className="text-3xl font-bold mb-6">Gratitude Log</h1>
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-800 p-6 md:p-8 overflow-hidden">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Gratitude Log</h1>
       
       {/* Form for input */}
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 mb-6">
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter something you're grateful for"
-          className="px-4 py-2 border text-center border-gray-300 rounded-md focus:outline-none w-[300px]"
+          className="px-4 py-2 border text-center border-gray-300 dark:border-gray-600 rounded-md focus:outline-none w-[300px] focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-500"
         />
-        <button onClick={addGratitude} className="px-4 py-2 bg-teal-400 hover:bg-teal-500 text-white rounded-md">
+        <button
+          onClick={addGratitude}
+          className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-md transition-colors dark:bg-teal-700 dark:hover:bg-teal-600"
+        >
           Add
         </button>
-        <button onClick={clearGratitudes} className="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded-md">
+        <button
+          onClick={clearGratitudes}
+          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md transition-colors dark:bg-gray-600 dark:hover:bg-gray-700"
+        >
           Clear
         </button>
       </div>
@@ -76,7 +84,7 @@ const GratitudeLog: React.FC = () => {
         {gratitudes.map((gratitude, index) => (
           <div
             key={index}
-            className="absolute text-lg font-semibold text-teal-400 animate-bounce transition-transform"
+            className="absolute text-lg font-semibold text-teal-500 animate-bounce transition-transform dark:text-teal-300"
             style={gratitude.position}
           >
             {gratitude.text}
