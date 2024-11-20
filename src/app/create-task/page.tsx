@@ -7,30 +7,23 @@ import TaskForm from "@/components/task-form";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
-import { Id } from "../../../convex/_generated/dataModel";
 
 const CreateTaskPage = () => {
   const addTaskMutation = useMutation(api.tasks.addTask);
-  const currentUser = useQuery(api.users.getMe);
+  const me = useQuery(api.users.getMe);
   const router = useRouter();
 
   const handleTaskSubmit = async (title: string, content: string, recurring: boolean) => {
-    if (!currentUser) {
-      alert("You must be logged in to create a task.");
-      return;
-    }
-
-    const userId: Id<"users"> = `users/${currentUser._id}` as Id<"users">;
 
     try {
       await addTaskMutation({
         title,
         content,
-        createdBy: userId,
+        createdBy: me!._id,
         recurring,
       });
       alert("Task created successfully!");
-      router.push("/tasks");
+      router.push("/user-tasks");
     } catch (error) {
       console.error("Error creating task:", error);
       alert("Failed to create task.");
