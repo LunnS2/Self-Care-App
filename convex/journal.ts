@@ -85,3 +85,50 @@ export const deleteNote = mutation({
     await ctx.db.delete(args.noteId);
   },
 });
+
+export const updateNote = mutation({
+  args: {
+    noteId: v.id("journal"),
+    title: v.optional(v.string()), // Allow updating title
+    content: v.optional(v.string()), // Allow updating content
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("You must be logged in to update notes.");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier)
+      )
+      .unique();
+
+    if (!user) {
+      throw new ConvexError("User not found.");
+    }
+
+    const note = await ctx.db.get(args.noteId);
+
+    if (!note) {
+      throw new ConvexError("Note not found.");
+    }
+
+    if (note.createdBy !== user._id) {
+      throw new ConvexError("Unauthorized: You can only update your own notes.");
+    }
+
+    // Prepare update payload
+    const updates: Partial<{ title: string; content: string }> = {};
+    if (args.title) updates.title = args.title;
+    if (args.content) updates.content = args.content;
+
+    if (Object.keys(updates).length === 0) {
+      throw new ConvexError("No fields to update.");
+    }
+
+    // Update the note
+    await ctx.db.patch(args.noteId, updates);
+  },
+});
