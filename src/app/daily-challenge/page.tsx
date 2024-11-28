@@ -27,7 +27,7 @@ const DailyChallenge = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen p-6 md:p-8">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-12">
         <header className="text-center mb-8">
           <h1 className="text-3xl font-semibold text-foreground">

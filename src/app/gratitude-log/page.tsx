@@ -52,7 +52,7 @@ const GratitudeLog: React.FC = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-800 p-6 md:p-8 overflow-hidden">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Gratitude Log</h1>
       
       {/* Form for input */}

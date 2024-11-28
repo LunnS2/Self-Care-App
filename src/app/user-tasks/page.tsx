@@ -22,7 +22,7 @@ const UserTasks = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 md:p-8">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
       <button
         className="top-0 bg-primary text-primary-foreground font-medium px-4 py-2 rounded hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 mb-4"
         onClick={() => router.push("/create-task")}

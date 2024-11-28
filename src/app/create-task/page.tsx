@@ -14,7 +14,6 @@ const CreateTaskPage = () => {
   const router = useRouter();
 
   const handleTaskSubmit = async (title: string, content: string, recurring: boolean) => {
-
     try {
       await addTaskMutation({
         title,
@@ -31,9 +30,9 @@ const CreateTaskPage = () => {
   };
 
   return (
-    <div className="flex justify-center mt-10">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
       <div className="w-full max-w-md">
-        <h1 className="text-2xl font-semibold mb-4 text-center text-gray-800">Create New Task</h1>
+        <h1 className="text-2xl font-semibold mb-4 text-center">Create New Task</h1>
         <TaskForm onSubmit={handleTaskSubmit} />
       </div>
     </div>
