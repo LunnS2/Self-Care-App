@@ -10,6 +10,7 @@ export default defineSchema({
 		image: v.string(),
 		tokenIdentifier: v.string(),
 		isOnline: v.boolean(),
+		points: v.optional(v.number()), // Add points field
 	}).index("by_tokenIdentifier", ["tokenIdentifier"]),
 
 	tasks: defineTable({
