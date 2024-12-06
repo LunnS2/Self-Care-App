@@ -1,43 +1,43 @@
 //self-care-app\convex\users.ts
 
 import { ConvexError, v } from "convex/values";
-import { internalMutation, query } from "./_generated/server";
+import { internalMutation, query, mutation } from "./_generated/server";
 
 export const createUser = internalMutation({
-	args: {
-		tokenIdentifier: v.string(),
-		email: v.string(),
-		name: v.string(),
-		image: v.string(),
-	},
-	handler: async (ctx, args) => {
-		await ctx.db.insert("users", {
-			tokenIdentifier: args.tokenIdentifier,
-			email: args.email,
-			name: args.name,
-			image: args.image,
-			isOnline: true,
-			points: 0,
-		});
-	},
+  args: {
+    tokenIdentifier: v.string(),
+    email: v.string(),
+    name: v.string(),
+    image: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("users", {
+      tokenIdentifier: args.tokenIdentifier,
+      email: args.email,
+      name: args.name,
+      image: args.image,
+      isOnline: true,
+      points: 0,
+    });
+  },
 });
 
 export const updateUser = internalMutation({
-	args: { tokenIdentifier: v.string(), image: v.string() },
-	async handler(ctx, args) {
-		const user = await ctx.db
-			.query("users")
-			.withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
-			.unique();
+  args: { tokenIdentifier: v.string(), image: v.string() },
+  async handler(ctx, args) {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
 
-		if (!user) {
-			throw new ConvexError("User not found");
-		}
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
 
-		await ctx.db.patch(user._id, {
-			image: args.image,
-		});
-	},
+    await ctx.db.patch(user._id, {
+      image: args.image,
+    });
+  },
 });
 
 export const setUserOnline = internalMutation({
@@ -106,54 +106,50 @@ export const getMe = query({
 	},
 });
 
-export const awardPoints = internalMutation({
-	args: { tokenIdentifier: v.string(), points: v.number() },
-	handler: async (ctx, args) => {
-		const user = await ctx.db
-			.query("users")
-			.withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
-			.unique();
+//
 
-		if (!user) {
-			throw new ConvexError("User not found");
-		}
+/* export const awardPoints = mutation({
+  args: { tokenIdentifier: v.string(), points: v.number() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
 
-		const newPoints = (user.points || 0) + args.points;
-		await ctx.db.patch(user._id, { points: newPoints });
-	},
-});
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
 
-export const buyGift = internalMutation({
-	args: { tokenIdentifier: v.string(), cost: v.number() },
-	handler: async (ctx, args) => {
-		const user = await ctx.db
-			.query("users")
-			.withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
-			.unique();
+    const newPoints = (user.points ?? 0) + args.points;
+    await ctx.db.patch(user._id, { points: newPoints });
+  },
+}); */
 
-		if (!user) {
-			throw new ConvexError("User not found");
-		}
+export const buyGift = mutation({
+  args: { tokenIdentifier: v.string(), cost: v.number() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
 
-		if ((user.points ?? 0) < args.cost) {
-			throw new ConvexError("Not enough points");
-		}
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
 
-		// Manually define your available images (replace with your actual list)
-		const availableImages = [
-			"image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg"
-		];
+    if ((user.points ?? 0) < args.cost) {
+      throw new ConvexError("Not enough points");
+    }
 
-		// Ensure there are available images
-		if (availableImages.length === 0) throw new ConvexError("No gifts available");
+    const availableImages = [
+      "image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg",
+    ];
 
-		// Select a random image
-		const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+    if (availableImages.length === 0) throw new ConvexError("No gifts available");
 
-		// Update user's points after buying the gift
-		await ctx.db.patch(user._id, { points: (user.points ?? 0) - args.cost });
+    const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+    await ctx.db.patch(user._id, { points: (user.points ?? 0) - args.cost });
 
-		// Return the image URL
-		return `/pictures/mental-health/${randomImage}`;
-	},
+    return `/pictures/mental-health/${randomImage}`;
+  },
 });

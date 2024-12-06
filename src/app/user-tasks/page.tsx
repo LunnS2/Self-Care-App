@@ -16,6 +16,7 @@ const UserTasks = () => {
   const tasks = useQuery(api.tasks.getTasks, userId ? { userId } : "skip");
 
   const deleteTask = useMutation(api.tasks.deleteTask);
+  const completeTask = useMutation(api.tasks.completeTask);
 
   if (!me) {
     return <p className="text-muted-foreground">Loading...</p>;
@@ -40,6 +41,16 @@ const UserTasks = () => {
               <h3 className="text-lg font-bold">{task.title}</h3>
               <p className="text-muted-foreground">{task.content}</p>
             </div>
+            {!task.completed && (
+              <button
+                onClick={async () => {
+                  await completeTask({ taskId: task._id });
+                }}
+                className="bg-success text-success-foreground px-4 py-2 rounded hover:bg-success/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                Complete
+              </button>
+            )}
             <button
               onClick={async () => {
                 await deleteTask({ taskId: task._id });

@@ -67,6 +67,7 @@ export const completeTask = mutation({
       throw new ConvexError("You must be logged in to complete tasks.");
     }
 
+    // Fetch the user
     const user = await ctx.db
       .query("users")
       .withIndex("by_tokenIdentifier", (q) =>
@@ -78,13 +79,27 @@ export const completeTask = mutation({
       throw new ConvexError("User not found.");
     }
 
+    // Fetch the task
     const task = await ctx.db.get(args.taskId);
 
     if (!task || task.createdBy !== user._id) {
       throw new ConvexError("Task not found or user is unauthorized.");
     }
 
+    if (task.completed) {
+      throw new ConvexError("Task is already completed.");
+    }
+
+    // Mark the task as completed
     await ctx.db.patch(args.taskId, { completed: true });
+
+    // Award points for completing the task
+    const pointsToAward = 10; // Define how many points to award per task
+    const newPoints = (user.points || 0) + pointsToAward;
+
+    await ctx.db.patch(user._id, { points: newPoints });
+
+    return { success: true, pointsAwarded: pointsToAward };
   },
 });
 
