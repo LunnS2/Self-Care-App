@@ -1,7 +1,5 @@
 // self-care-app\src\app\shop\page.tsx
 
-// self-care-app\src\app\shop\page.tsx
-
 "use client";
 
 import React, { useState, useEffect } from "react";

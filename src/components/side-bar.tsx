@@ -24,7 +24,7 @@ function SideBar() {
   if (!isMounted) return null;
 
   return (
-    <aside className="fixed left-0 top-0 w-16 h-screen bg-gray-800 flex flex-col items-center py-6 transition-all duration-300 hover:w-24 md:w-20 md:hover:w-24 shadow-xl">
+    <aside className="fixed left-0 top-0 w-16 h-screen bg-card flex flex-col items-center py-6 transition-all duration-300 hover:w-24 md:w-20 md:hover:w-24 shadow-xl">
       <nav className="flex flex-col space-y-6 text-white">
         <NavLink href="/" icon={<HouseboatIcon  />} label="Home" />
         <NavLink href="/create-task" icon={<TaskIcon />} label="Add Tasks" />
