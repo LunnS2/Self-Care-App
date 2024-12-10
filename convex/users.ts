@@ -41,32 +41,35 @@ export const updateUser = internalMutation({
 });
 
 export const setUserOnline = internalMutation({
-	args: { tokenIdentifier: v.string() },
-	handler: async (ctx, args) => {
-		const user = await ctx.db
-			.query("users")
-			.withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
-			.unique();
+  args: { tokenIdentifier: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
 
-		if (!user) {
-			throw new ConvexError("User not found");
-		}
+    if (!user) {
+      console.log(`User not found for tokenIdentifier: ${args.tokenIdentifier}. Retrying later.`);
+      return; // Avoid throwing an error
+    }
 
-		await ctx.db.patch(user._id, { isOnline: true });
-	},
+    await ctx.db.patch(user._id, { isOnline: true });
+  },
 });
+
 
 export const setUserOffline = internalMutation({
 	args: { tokenIdentifier: v.string() },
 	handler: async (ctx, args) => {
 		const user = await ctx.db
-			.query("users")
-			.withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
-			.unique();
+      .query("users")
+      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
 
-		if (!user) {
-			throw new ConvexError("User not found");
-		}
+    if (!user) {
+      console.log(`User not found for tokenIdentifier: ${args.tokenIdentifier}. Retrying later.`);
+      return; // Avoid throwing an error
+    }
 
 		await ctx.db.patch(user._id, { isOnline: false });
 	},
