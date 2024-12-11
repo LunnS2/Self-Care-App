@@ -39,25 +39,29 @@ http.route({
 						image: result.data.image_url,
 					});
 					break;
-					case "session.created":
-						console.log("Session created for user:", result.data.user_id);
-						try {
-							await ctx.runMutation(internal.users.setUserOnline, {
-								tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.user_id}`,
-							});
-						} catch (error) {
-							console.log(`Failed to set user online: ${error}`);
-							return new Response("Retry later", { status: 400 });
-						}
-						break;
-
+				case "session.created":
+					console.log("Session created for user:", result.data.user_id);
+					try {
+						await ctx.runMutation(internal.users.setUserOnline, {
+							tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.user_id}`,
+						});
+					} catch (error) {
+						console.log(`Failed to set user online: ${error}`);
+						return new Response("Retry later", { status: 400 });
+					}
+					break;
 				case "session.ended":
 					console.log("Session ended for user:", result.data.user_id);
 					await ctx.runMutation(internal.users.setUserOffline, {
 						tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.user_id}`,
 					});
 					break;
-
+				case "session.removed":
+					console.log("Session removed for user:", result.data.user_id);
+					await ctx.runMutation(internal.users.setUserOffline, {
+						tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.user_id}`,
+					});
+					break;
 				default:
 					console.log("Unhandled event type:", result.type);
 			}

@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import NavLink from "./nav-link";
-import HouseboatIcon from "@mui/icons-material/Houseboat";
+import HomeIcon from '@mui/icons-material/Home';
 import TaskIcon from "@mui/icons-material/Task";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ChallengeIcon from "@mui/icons-material/EmojiEvents";
@@ -26,7 +26,7 @@ function SideBar() {
   return (
     <aside className="fixed left-0 top-0 w-16 h-screen bg-card flex flex-col items-center py-6 transition-all duration-300 hover:w-24 md:w-20 md:hover:w-24 shadow-xl">
       <nav className="flex flex-col space-y-6 text-white">
-        <NavLink href="/" icon={<HouseboatIcon  />} label="Home" />
+        <NavLink href="/" icon={<HomeIcon />} label="Home" />
         <NavLink href="/create-task" icon={<TaskIcon />} label="Add Tasks" />
         <NavLink href="/user-tasks" icon={<AssignmentIcon />} label="Your Tasks" />
         <NavLink href="/daily-challenge" icon={<ChallengeIcon />} label="Daily Challenge" />

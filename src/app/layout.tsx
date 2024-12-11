@@ -12,15 +12,11 @@ export const metadata: Metadata = {
   description: "Your self-care app of choice",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <ClerkProvider dynamic>
+    <ClerkProvider dynamic>
+      <html lang="en">
+        <body>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -40,8 +36,30 @@ export default function RootLayout({
               </header>
             </ConvexClientProvider>
           </ThemeProvider>
-        </ClerkProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
+
+
+/*
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <header>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
+          <main>{children}</main>
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+} */
