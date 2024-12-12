@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 
@@ -10,19 +10,20 @@ const Shop = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  // Fetch the logged-in user data
   const getMe = useQuery(api.users.getMe);
   const buyGift = useMutation(api.users.buyGift);
 
   const handleBuyGift = async () => {
-    if (!getMe) return;
+    if (!getMe) return; // Safety check in case user data is still loading
 
     setLoading(true);
-    setMessage(null);
+    setMessage(null); // Reset message before attempting purchase
 
     try {
       const giftUrl = await buyGift({
         tokenIdentifier: getMe.tokenIdentifier,
-        cost: 10, // Set the cost of the gift here
+        cost: 10,
       });
 
       setMessage(`Congratulations! You received a gift: ${giftUrl}`);
@@ -34,32 +35,48 @@ const Shop = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
-      <h1 className="text-2xl font-bold mb-4">Shop</h1>
-      {getMe ? (
-        <div className="text-center">
-          <p className="mb-4">Points: {getMe.points}</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8">
+      <h1 className="text-3xl font-bold mb-6">Shop</h1>
+      
+      {/* Loading State */}
+      {!getMe ? (
+        <p className="text-muted">Loading user data...</p>
+      ) : (
+        <div className="text-center bg-card p-6 rounded-lg shadow-lg">
+          <p className="text-lg font-semibold mb-4">Points: {getMe.points}</p>
+          
+          {/* Buy Button */}
           <button
             onClick={handleBuyGift}
             disabled={loading || (getMe.points ?? 0) < 10}
-            className={`px-6 py-3 rounded-md text-white ${
+            className={`w-full px-4 py-2 rounded-md text-primary-foreground font-semibold transition ${
               loading || (getMe.points ?? 0) < 10
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600"
+                ? "bg-muted cursor-not-allowed"
+                : "bg-primary hover:bg-primary/90"
             }`}
+            
           >
             {loading ? "Processing..." : "Buy Gift (10 Points)"}
           </button>
+
+          {/* Message Section */}
           {message && (
-            <p className="mt-4 text-sm text-green-500">
-              {message.startsWith("Congratulations")
-                ? <a href={message.split(" ").pop()} target="_blank" rel="noopener noreferrer">View Gift</a>
-                : message}
-            </p>
+            <div className="mt-4 text-sm">
+              {message.startsWith("Congratulations") ? (
+                <a
+                  href={message.split(" ").pop()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline hover:text-primary/80"
+                >
+                  🎁 View Your Gift
+                </a>
+              ) : (
+                <p className="text-red-500">{message}</p>
+              )}
+            </div>
           )}
         </div>
-      ) : (
-        <p>Loading user data...</p>
       )}
     </div>
   );

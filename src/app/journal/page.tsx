@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
-import { TrashIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { TrashIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 const Journal = () => {
   const [journal, setJournal] = useState({ title: "", content: "" });
@@ -28,7 +28,6 @@ const Journal = () => {
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!journal.title.trim() || !journal.content.trim()) {
       alert("Please provide both a title and content.");
       return;
@@ -55,7 +54,6 @@ const Journal = () => {
 
   const handleSaveNote = async () => {
     if (!activeNote) return;
-
     if (!activeNote.title.trim() || !activeNote.content.trim()) {
       alert("Please provide both a title and content.");
       return;
@@ -76,7 +74,6 @@ const Journal = () => {
 
   const handleDeleteNote = async () => {
     if (!confirmDelete) return;
-
     try {
       await deleteNote({ noteId: confirmDelete });
       setConfirmDelete(null);
@@ -92,120 +89,89 @@ const Journal = () => {
   );
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
-      <h1 className="text-3xl font-bold mb-8 text-center">Journal</h1>
+    <div className="flex flex-col items-center p-8 min-h-screen bg-background text-foreground">
+      <h1 className="text-3xl font-bold mb-8">Journal</h1>
 
       {/* Search Bar */}
-      <div className="mb-6 w-full max-w-lg">
-        <input
-          type="text"
-          placeholder="Search notes..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-700 bg-gray-800 text-gray-200 rounded-lg focus:ring focus:ring-gray-500 focus:outline-none"
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Search notes..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full max-w-lg px-4 py-2 border border-input bg-card rounded-md text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary mb-6"
+      />
 
       {/* Add Note Form */}
       <form
         onSubmit={handleAddNote}
-        className="w-full max-w-lg bg-gray-800 p-6 rounded-lg shadow-lg mb-8"
+        className="w-full max-w-lg bg-card p-6 rounded-md shadow-md mb-8"
       >
-        <div className="mb-4">
-          <label className="block text-gray-300 font-medium mb-2">Title</label>
-          <input
-            type="text"
-            value={journal.title}
-            onChange={(e) =>
-              setJournal((prev) => ({ ...prev, title: e.target.value }))
-            }
-            className="w-full px-4 py-2 border border-gray-700 bg-gray-700 text-gray-200 rounded-lg focus:ring focus:ring-gray-500 focus:outline-none"
-            placeholder="Enter your title"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-300 font-medium mb-2">Content</label>
-          <textarea
-            value={journal.content}
-            onChange={(e) =>
-              setJournal((prev) => ({ ...prev, content: e.target.value }))
-            }
-            className="w-full px-4 py-2 border border-gray-700 bg-gray-700 text-gray-200 rounded-lg focus:ring focus:ring-gray-500 focus:outline-none"
-            placeholder="Enter your content"
-            rows={5}
-          />
-        </div>
+        <h2 className="text-lg font-semibold mb-4">Add New Note</h2>
+        <input
+          type="text"
+          value={journal.title}
+          onChange={(e) =>
+            setJournal((prev) => ({ ...prev, title: e.target.value }))
+          }
+          placeholder="Title"
+          className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <textarea
+          value={journal.content}
+          onChange={(e) =>
+            setJournal((prev) => ({ ...prev, content: e.target.value }))
+          }
+          placeholder="Content"
+          rows={4}
+          className="w-full px-4 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+        />
         <button
           type="submit"
-          className="w-full bg-gray-700 text-gray-200 py-2 px-4 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-500"
+          className="w-full mt-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition"
         >
           Add Note
         </button>
       </form>
 
       {/* Notes Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
         {filteredNotes?.map((note) => (
           <div
             key={note._id}
-            className="bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col cursor-pointer relative"
+            className="bg-card p-4 rounded-md shadow-md hover:shadow-lg transition cursor-pointer relative"
             onClick={() => setActiveNote(note)}
           >
-            <h2
-              className="text-xl font-bold text-gray-200 mb-2 truncate"
-              style={{
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1,
-              }}
-            >
-              {note.title}
-            </h2>
-            <p
-              className="text-gray-300 mb-4 truncate"
-              style={{
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1,
-              }}
-            >
-              {note.content}
-            </p>
-            <span className="text-sm text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-              Click to expand and edit
-            </span>
-
-            {/* Trash Bin Icon for Deletion in Notes Grid */}
-            <div
+            <h3 className="text-lg font-semibold mb-2 truncate">{note.title}</h3>
+            <p className="text-sm text-muted-foreground truncate">{note.content}</p>
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 setConfirmDelete(note._id);
               }}
-              className="absolute top-2 right-2 text-gray-400 hover:text-red-500 cursor-pointer text-2xl"
+              className="absolute top-2 right-2 text-gray-500 hover:text-red-500 transition"
             >
-              <TrashIcon fontSize="inherit" />
-            </div>
+              <TrashIcon />
+            </button>
           </div>
         ))}
       </div>
 
       {/* Delete Confirmation Modal */}
       {confirmDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 max-w-md">
-            <h2 className="text-xl font-bold text-gray-200 mb-4">
-              Are you sure you want to delete this note?
-            </h2>
-            <div className="flex justify-between">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-card p-6 rounded-md shadow-md">
+            <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
+            <p className="mb-4">Are you sure you want to delete this note?</p>
+            <div className="flex justify-end gap-4">
               <button
                 onClick={handleDeleteNote}
-                className="bg-red-600 text-gray-200 py-2 px-4 rounded-lg hover:bg-red-500 focus:outline-none"
+                className="bg-destructive text-white py-2 px-4 rounded-md hover:bg-red-600"
               >
-                Yes, Delete
+                Delete
               </button>
               <button
                 onClick={() => setConfirmDelete(null)}
-                className="bg-gray-600 text-gray-200 py-2 px-4 rounded-lg hover:bg-gray-500 focus:outline-none"
+                className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400"
               >
                 Cancel
               </button>
@@ -214,54 +180,39 @@ const Journal = () => {
         </div>
       )}
 
-      {/* Edit Modal */}
+      {/* Edit Note Modal */}
       {activeNote && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 max-w-2xl relative">
-            {/* Close Icon (X) */}
-            <div
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-card p-6 rounded-md shadow-md w-full max-w-2xl relative">
+            <button
               onClick={() => setActiveNote(null)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-200 cursor-pointer text-2xl"
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
             >
               <Cross2Icon />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-200 mb-4">Edit Note</h2>
-            <div className="mb-4">
-              <label className="block text-gray-300 font-medium mb-2">Title</label>
-              <input
-                type="text"
-                value={activeNote.title}
-                onChange={(e) =>
-                  setActiveNote((prev) => ({
-                    ...prev!,
-                    title: e.target.value,
-                  }))
-                }
-                className="w-full px-4 py-2 border border-gray-700 bg-gray-700 text-gray-200 rounded-lg focus:ring focus:ring-gray-500 focus:outline-none"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-300 font-medium mb-2">Content</label>
-              <textarea
-                value={activeNote.content}
-                onChange={(e) =>
-                  setActiveNote((prev) => ({
-                    ...prev!,
-                    content: e.target.value,
-                  }))
-                }
-                className="w-full px-4 py-2 border border-gray-700 bg-gray-700 text-gray-200 rounded-lg focus:ring focus:ring-gray-500 focus:outline-none"
-                rows={5}
-              />
-            </div>
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={handleSaveNote}
-                className="bg-green-600 text-gray-200 py-2 px-4 rounded-lg hover:bg-green-500 focus:outline-none"
-              >
-                Save
-              </button>
-            </div>
+            </button>
+            <h2 className="text-lg font-semibold mb-4">Edit Note</h2>
+            <input
+              type="text"
+              value={activeNote.title}
+              onChange={(e) =>
+                setActiveNote((prev) => ({ ...prev!, title: e.target.value }))
+              }
+              className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:ring-2 focus:ring-primary"
+            />
+            <textarea
+              value={activeNote.content}
+              onChange={(e) =>
+                setActiveNote((prev) => ({ ...prev!, content: e.target.value }))
+              }
+              rows={4}
+              className="w-full px-4 py-2 border border-input bg-background rounded-md focus:ring-2 focus:ring-primary"
+            />
+            <button
+              onClick={handleSaveNote}
+              className="w-full mt-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 transition"
+            >
+              Save Changes
+            </button>
           </div>
         </div>
       )}

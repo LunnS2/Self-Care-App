@@ -26,44 +26,57 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-lg">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-card p-6 rounded-lg shadow-lg">
+      {/* Title Input */}
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Task Title</label>
+        <label htmlFor="title" className="block text-sm font-medium text-foreground">
+          Task Title
+        </label>
         <input
           id="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:outline-none"
+          className="mt-1 block w-full p-3 bg-background border border-muted rounded-md text-foreground focus:ring-primary focus:border-primary focus:outline-none"
+          placeholder="Enter task title"
           required
         />
       </div>
 
+      {/* Content Input */}
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-gray-700">Task Content</label>
+        <label htmlFor="content" className="block text-sm font-medium text-foreground">
+          Task Content
+        </label>
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:outline-none"
+          rows={4}
+          className="mt-1 block w-full p-3 bg-background border border-muted rounded-md text-foreground focus:ring-primary focus:border-primary focus:outline-none"
+          placeholder="Describe your task here"
           required
         />
       </div>
 
+      {/* Recurring Checkbox */}
       <div className="flex items-center">
         <input
           id="recurring"
           type="checkbox"
           checked={recurring}
           onChange={(e) => setRecurring(e.target.checked)}
-          className="mr-2"
+          className="h-5 w-5 text-primary focus:ring-primary/70 border-muted rounded"
         />
-        <label htmlFor="recurring" className="text-sm font-medium text-gray-700">Recurring Task</label>
+        <label htmlFor="recurring" className="ml-2 text-sm font-medium text-foreground">
+          Recurring Task
+        </label>
       </div>
 
+      {/* Submit Button */}
       <button
         type="submit"
-        className="w-full bg-teal-500 text-white py-2 rounded hover:bg-teal-600 focus:outline-none"
+        className="w-full py-3 px-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/70"
       >
         Add Task
       </button>

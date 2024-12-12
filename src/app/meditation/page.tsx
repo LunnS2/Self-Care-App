@@ -1,227 +1,199 @@
+// self-care-app\src\app\meditation\page.tsx
+
 "use client";
 
 import React, { useState, useEffect } from "react";
 
 function Meditation() {
-  const [timeLeft, setTimeLeft] = useState<number>(0); // Timer in seconds
-  const [initialTime, setInitialTime] = useState<number>(0); // Store the initial time set by the user
-  const [isCounting, setIsCounting] = useState<boolean>(false); // Controls whether the timer is active
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [initialTime, setInitialTime] = useState<number>(0);
+  const [isCounting, setIsCounting] = useState<boolean>(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-  const [endSound, setEndSound] = useState<HTMLAudioElement | null>(null); // Timer end sound
-  const [timerEnded, setTimerEnded] = useState<boolean>(false); // Flag for timer completion
+  const [endSound, setEndSound] = useState<HTMLAudioElement | null>(null);
+  const [timerEnded, setTimerEnded] = useState<boolean>(false);
   const [selectedAudio, setSelectedAudio] =
-    useState<string>("/audios/nature.mp3"); // Default audio
-  const [resetting, setResetting] = useState<boolean>(false); // Flag to track reset state
-  const [mounted, setMounted] = useState<boolean>(false); // Track if component has mounted
+    useState<string>("/audios/nature.mp3");
+  const [resetting, setResetting] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
-  // Handle audio selection change
   const handleAudioChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedAudio(e.target.value);
   };
 
-  // Handle play action
   const handlePlay = () => {
     if (!audio) {
       const newAudio = new Audio(selectedAudio);
-      newAudio.loop = true; // Set audio to loop
+      newAudio.loop = true;
       setAudio(newAudio);
       newAudio.play();
     } else {
       audio.src = selectedAudio;
-      audio.loop = true; // Ensure looping is enabled when audio changes
+      audio.loop = true;
       audio.play();
     }
   };
 
-  // Handle pause action
   const handlePause = () => {
     audio?.pause();
   };
 
-  // Timer countdown effect
   useEffect(() => {
-    // Prevent countdown if timer is not started or if we are resetting
     if (isCounting && timeLeft > 0) {
-      const interval = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
-      }, 1000);
-
-      return () => clearInterval(interval); // Cleanup on unmount
+      const interval = setInterval(
+        () => setTimeLeft((prevTime) => prevTime - 1),
+        1000
+      );
+      return () => clearInterval(interval);
     } else if (timeLeft === 0 && !timerEnded && !resetting && mounted) {
-      // Only set timerEnded if it's not a reset or initial mount
-      setTimerEnded(true); // Timer has ended, only set when not resetting
+      setTimerEnded(true);
     }
   }, [isCounting, timeLeft, timerEnded, resetting, mounted]);
 
-  // Load the end sound once when component mounts
   useEffect(() => {
-    const newEndSound = new Audio("/audios/timer-end.mp3"); // Your timer end sound file
+    const newEndSound = new Audio("/audios/timer-end.mp3");
     setEndSound(newEndSound);
   }, []);
 
-  // Play the end sound only when the timer ends naturally
   useEffect(() => {
     if (timerEnded && endSound) {
-      endSound.play(); // Play the timer end sound when time is up
+      endSound.play();
     }
   }, [timerEnded, endSound]);
 
-  // Start timer countdown
   const startTimer = () => {
     if (timeLeft > 0) {
-      setIsCounting(true); // Start the countdown
-      setTimerEnded(false); // Reset the "ended" state when starting a new timer
+      setIsCounting(true);
+      setTimerEnded(false);
     }
   };
 
-  // Increase timer by 1 minute
-  const incrementTimer = () => {
-    setTimeLeft((prevTime) => prevTime + 60); // Add 60 seconds (1 minute)
-    setTimerEnded(false); // Reset the "ended" state when incrementing the timer
-  };
+  const incrementTimer = () => setTimeLeft((prevTime) => prevTime + 60);
+  const incrementFiveMinutes = () =>
+    setTimeLeft((prevTime) => prevTime + 5 * 60);
+  const decrementTimer = () =>
+    timeLeft > 60 && setTimeLeft((prevTime) => prevTime - 60);
+  const decrementFiveMinutes = () =>
+    timeLeft > 5 * 60 && setTimeLeft((prevTime) => prevTime - 5 * 60);
 
-  // Increase timer by 5 minutes
-  const incrementFiveMinutes = () => {
-    setTimeLeft((prevTime) => prevTime + 5 * 60); // Add 5 minutes (300 seconds)
-    setTimerEnded(false); // Reset the "ended" state when incrementing the timer
-  };
-
-  // Decrease timer by 1 minute
-  const decrementTimer = () => {
-    if (timeLeft > 60) {
-      // Prevent going below 0 minutes
-      setTimeLeft((prevTime) => prevTime - 60); // Subtract 60 seconds (1 minute)
-    }
-  };
-
-  // Decrease timer by 5 minutes
-  const decrementFiveMinutes = () => {
-    if (timeLeft > 5 * 60) {
-      // Prevent going below 0 minutes
-      setTimeLeft((prevTime) => prevTime - 5 * 60); // Subtract 5 minutes (300 seconds)
-    }
-  };
-
-  // Format time as MM:SS
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Reset the timer to the initial time
   const resetTimer = () => {
-    setResetting(true); // Set the resetting flag to true
-    setIsCounting(false); // Stop the timer
-    setTimeLeft(initialTime); // Reset to the initial time
-    setTimerEnded(false); // Reset the "ended" state to avoid sound playback
+    setResetting(true);
+    setIsCounting(false);
+    setTimeLeft(initialTime);
+    setTimerEnded(false);
   };
 
-  // Set initial time when component mounts
   useEffect(() => {
-    const defaultTime = 15 * 60; // Default to 15 minutes (900 seconds)
+    const defaultTime = 15 * 60;
     setInitialTime(defaultTime);
-    setTimeLeft(defaultTime); // Ensure timer starts with a non-zero time
-    setMounted(true); // Set mounted flag to true after initial mount
+    setTimeLeft(defaultTime);
+    setMounted(true);
   }, []);
 
-  // Reset the resetting flag after a short delay
   useEffect(() => {
     if (resetting) {
-      setTimeout(() => setResetting(false), 500); // Short delay to reset the flag
+      setTimeout(() => setResetting(false), 500);
     }
   }, [resetting]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6 md:p-12">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">
-        Meditation Timer
-      </h1>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
+      <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-12">
+        {/* Header */}
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-bold">Meditation Timer</h1>
+          <p className="mt-2 text-lg text-muted-foreground">
+            Customize your meditation session with soothing sounds and a timer.
+          </p>
+        </header>
 
-      {/* Audio Selector */}
-      <select
-        value={selectedAudio}
-        onChange={handleAudioChange}
-        className="mb-6 p-3 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
-      >
-        <option value="/audios/nature.mp3">Nature Sounds</option>
-        <option value="/audios/ocean.mp3">Calm Ocean</option>
-        <option value="/audios/rain.mp3">Rainy Day</option>
-        <option value="/audios/birds.mp3">Forest Birds</option>
-        <option value="/audios/night.mp3">Peaceful Night</option>
-      </select>
+        {/* Audio Selector */}
+        <div className="text-center mb-6">
+          <label className="block text-muted-foreground mb-2">
+            Select Background Sound
+          </label>
+          <select
+            value={selectedAudio}
+            onChange={handleAudioChange}
+            className="p-3 bg-background text-foreground border rounded-lg"
+          >
+            <option value="/audios/nature.mp3">Nature Sounds</option>
+            <option value="/audios/ocean.mp3">Calm Ocean</option>
+            <option value="/audios/rain.mp3">Rainy Day</option>
+            <option value="/audios/birds.mp3">Forest Birds</option>
+            <option value="/audios/night.mp3">Peaceful Night</option>
+          </select>
+        </div>
 
-      {/* Play/Pause Buttons */}
-      <div className="flex gap-4 mt-4">
-        <button
-          onClick={handlePlay}
-          className="p-3 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
-        >
-          Play
-        </button>
-        <button
-          onClick={handlePause}
-          className="p-3 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
-        >
-          Pause
-        </button>
-      </div>
-
-      {/* Timer Display */}
-      <div className="mt-10 flex flex-col items-center">
-        <p className="text-4xl font-semibold text-gray-900 mb-4">
-          {formatTime(timeLeft)}
-        </p>
-
-        {/* Timer Control Buttons */}
-        <div className="flex flex-wrap gap-4 justify-center">
-          <div className="flex gap-4">
+        {/* Timer Display */}
+        <div className="text-center mb-6">
+          <p className="text-5xl font-semibold mb-4">{formatTime(timeLeft)}</p>
+          <div className="flex justify-center gap-4 flex-wrap">
             <button
               onClick={decrementFiveMinutes}
-              className="p-3 px-6 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
+              className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary/80"
             >
               -5 Min
             </button>
             <button
               onClick={decrementTimer}
-              className="p-3 px-6 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
+              className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary/80"
             >
               -1 Min
             </button>
-          </div>
-          <div className="flex gap-4">
             <button
               onClick={incrementTimer}
-              className="p-3 px-6 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
+              className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary/80"
             >
               +1 Min
             </button>
             <button
               onClick={incrementFiveMinutes}
-              className="p-3 px-6 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
+              className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary/80"
             >
               +5 Min
             </button>
           </div>
         </div>
 
-        {/* Start/Reset Timer Buttons */}
-        <div className="flex gap-4 mt-6">
+        {/* Timer Controls */}
+        <div className="flex justify-center gap-4">
           <button
             onClick={startTimer}
-            className="p-3 px-6 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
+            className="bg-primary text-primary-foreground py-2 px-6 rounded-lg hover:bg-primary/80"
           >
             Start Timer
           </button>
           <button
             onClick={resetTimer}
-            className="p-3 px-6 bg-gray-900 text-white rounded hover:bg-gray-800 focus:outline-none"
+            className="bg-muted text-muted-foreground py-2 px-6 rounded-lg hover:bg-muted/80"
           >
             Reset Timer
           </button>
         </div>
+
+        {/* Audio Controls */}
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={handlePlay}
+            className="bg-primary text-primary-foreground py-2 px-6 rounded-lg hover:bg-primary/80"
+          >
+            Play Sound
+          </button>
+          <button
+            onClick={handlePause}
+            className="bg-muted text-muted-foreground py-2 px-6 rounded-lg hover:bg-muted/80"
+          >
+            Pause Sound
+          </button>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
 

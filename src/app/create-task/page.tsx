@@ -30,12 +30,17 @@ const CreateTaskPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-semibold mb-4 text-center">Create New Task</h1>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-6 md:p-24">
+      <div className="w-full max-w-lg bg-card rounded-lg shadow-lg p-8">
+        <h1 className="text-3xl font-bold mb-6 text-center text-foreground">
+          Create New Task
+        </h1>
+        <p className="text-muted-foreground text-center mb-4">
+          Organize your tasks and prioritize your well-being.
+        </p>
         <TaskForm onSubmit={handleTaskSubmit} />
       </div>
-    </div>
+    </main>
   );
 };
 
