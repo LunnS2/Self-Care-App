@@ -83,7 +83,7 @@ const GratitudeLog: React.FC = () => {
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-8 md:p-12 relative overflow-hidden">
         {/* Header */}
         <header className="text-center mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+          <h1 className="text-4xl font-bold text-foreground">
             Gratitude Log
           </h1>
           <p className="text-lg text-muted-foreground mt-2">

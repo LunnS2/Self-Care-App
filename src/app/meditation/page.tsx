@@ -132,7 +132,7 @@ function Meditation() {
 
         {/* Timer Display */}
         <div className="text-center mb-6">
-          <p className="text-5xl font-semibold mb-4">{formatTime(timeLeft)}</p>
+          <p className="text-4xl font-semibold mb-4">{formatTime(timeLeft)}</p>
           <div className="flex justify-center gap-4 flex-wrap">
             <button
               onClick={decrementFiveMinutes}

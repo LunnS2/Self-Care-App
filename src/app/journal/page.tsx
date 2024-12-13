@@ -90,7 +90,7 @@ const Journal = () => {
 
   return (
     <div className="flex flex-col items-center p-8 min-h-screen bg-background text-foreground">
-      <h1 className="text-3xl font-bold mb-8">Journal</h1>
+      <h1 className="text-4xl font-bold mb-8">Journal</h1>
 
       {/* Search Bar */}
       <input

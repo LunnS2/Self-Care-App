@@ -30,7 +30,7 @@ const DailyChallenge = () => {
     <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-12">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-semibold text-foreground">
+          <h1 className="text-4xl font-semibold text-foreground">
             Daily Challenge
           </h1>
           <p className="mt-2 text-lg text-muted-foreground">

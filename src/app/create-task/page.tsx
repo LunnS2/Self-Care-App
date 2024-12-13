@@ -32,7 +32,7 @@ const CreateTaskPage = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-6 md:p-24">
       <div className="w-full max-w-lg bg-card rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center text-foreground">
+        <h1 className="text-4xl font-bold mb-6 text-center text-foreground">
           Create New Task
         </h1>
         <p className="text-muted-foreground text-center mb-4">
