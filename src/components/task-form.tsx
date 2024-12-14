@@ -37,7 +37,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 block w-full p-3 bg-background border border-muted rounded-md text-foreground focus:ring-primary focus:border-primary focus:outline-none"
+          className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="Enter task title"
           required
         />
@@ -53,7 +53,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={4}
-          className="mt-1 block w-full p-3 bg-background border border-muted rounded-md text-foreground focus:ring-primary focus:border-primary focus:outline-none"
+          className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="Describe your task here"
           required
         />

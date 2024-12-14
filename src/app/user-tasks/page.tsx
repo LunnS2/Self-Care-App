@@ -24,6 +24,8 @@ const UserTasks = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
+      <h1 className="text-4xl font-bold mb-8">Your Tasks</h1>
+
       <button
         className="top-0 bg-primary text-primary-foreground font-medium px-4 py-2 rounded hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 mb-4"
         onClick={() => router.push("/create-task")}
@@ -55,7 +57,7 @@ const UserTasks = () => {
               onClick={async () => {
                 await deleteTask({ taskId: task._id });
               }}
-              className="bg-destructive text-destructive-foreground px-4 py-2 rounded hover:bg-destructive/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              className="bg-destructive text-destructive-foreground px-4 py-2 rounded hover:bg-destructive/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             >
               Delete
             </button>

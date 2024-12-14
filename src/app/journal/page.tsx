@@ -165,7 +165,7 @@ const Journal = () => {
             <div className="flex justify-end gap-4">
               <button
                 onClick={handleDeleteNote}
-                className="bg-destructive text-white py-2 px-4 rounded-md hover:bg-red-600"
+                className="bg-destructive text-white py-2 px-4 rounded-md hover:bg-destructive/80"
               >
                 Delete
               </button>
@@ -209,7 +209,7 @@ const Journal = () => {
             />
             <button
               onClick={handleSaveNote}
-              className="w-full mt-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 transition"
+              className="w-full mt-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition"
             >
               Save Changes
             </button>

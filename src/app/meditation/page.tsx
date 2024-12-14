@@ -120,7 +120,7 @@ function Meditation() {
           <select
             value={selectedAudio}
             onChange={handleAudioChange}
-            className="p-3 bg-background text-foreground border rounded-lg"
+            className="px-4 py-2 border text-center border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="/audios/nature.mp3">Nature Sounds</option>
             <option value="/audios/ocean.mp3">Calm Ocean</option>
