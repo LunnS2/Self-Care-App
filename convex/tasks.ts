@@ -1,3 +1,5 @@
+// self-care-app\convex\tasks.ts
+
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
@@ -8,6 +10,7 @@ export const addTask = mutation({
     content: v.string(),
     createdBy: v.id("users"),
     recurring: v.boolean(),
+    lastCompleted: v.optional(v.number()), 
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -32,10 +35,10 @@ export const addTask = mutation({
       completed: false,
       createdBy: user._id,
       recurring: args.recurring,
+      lastCompleted: args.lastCompleted,
     });
   },
 });
-
 
 // Retrieve All Tasks for a User
 export const getTasks = query({
@@ -48,11 +51,14 @@ export const getTasks = query({
       throw new ConvexError("You must be logged in to get tasks.");
     }
 
-    return await ctx.db
+    const tasks = await ctx.db
       .query("tasks")
       .withIndex("by_createdBy", (q) => q.eq("createdBy", args.userId))
+      .filter((q) => q.eq(q.field("completed"), false))
       .order("asc")
       .collect();
+
+    return tasks;
   },
 });
 
@@ -67,7 +73,6 @@ export const completeTask = mutation({
       throw new ConvexError("You must be logged in to complete tasks.");
     }
 
-    // Fetch the user
     const user = await ctx.db
       .query("users")
       .withIndex("by_tokenIdentifier", (q) =>
@@ -79,7 +84,6 @@ export const completeTask = mutation({
       throw new ConvexError("User not found.");
     }
 
-    // Fetch the task
     const task = await ctx.db.get(args.taskId);
 
     if (!task || task.createdBy !== user._id) {
@@ -90,16 +94,56 @@ export const completeTask = mutation({
       throw new ConvexError("Task is already completed.");
     }
 
-    // Mark the task as completed
-    await ctx.db.patch(args.taskId, { completed: true });
+    if (task.recurring) {
+      await ctx.db.patch(args.taskId, {
+        completed: true,
+        lastCompleted: Date.now(),
+      });
+    } else {
+      await ctx.db.delete(args.taskId);
+    }
 
-    // Award points for completing the task
-    const pointsToAward = 10; // Define how many points to award per task
+    const pointsToAward = 10;
     const newPoints = (user.points || 0) + pointsToAward;
 
     await ctx.db.patch(user._id, { points: newPoints });
 
     return { success: true, pointsAwarded: pointsToAward };
+  },
+});
+
+// Regenerate Recurring Tasks
+export const regenerateRecurringTasks = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const now = new Date();
+    
+    // Get the current date at 4 AM (in the local timezone)
+    const fourAM = new Date(now.setHours(4, 0, 0, 0));
+
+    const recurringTasks = await ctx.db
+      .query("tasks")
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("recurring"), true),
+          q.or(
+            q.lte(q.field("lastCompleted"), fourAM.getTime()),
+            q.eq(q.field("lastCompleted"), undefined)
+          )
+        )
+      )
+      .collect();
+
+    for (const task of recurringTasks) {
+      try {
+        await ctx.db.patch(task._id, {
+          completed: false,
+          lastCompleted: fourAM.getTime(),
+        });
+      } catch (error) {
+        console.error(`Failed to regenerate task ${task._id}:`, error);
+      }
+    }
   },
 });
 

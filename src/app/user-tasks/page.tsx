@@ -42,6 +42,11 @@ const UserTasks = () => {
             <div className="flex-1">
               <h3 className="text-lg font-bold">{task.title}</h3>
               <p className="text-muted-foreground">{task.content}</p>
+              {task.recurring ? (
+                <p className="text-sm text-muted-foreground mt-2">Daily</p>
+              ) : (
+                <p className="text-sm text-muted-foreground mt-2">One Time Only</p>
+              )}
             </div>
             {!task.completed && (
               <button

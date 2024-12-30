@@ -37,10 +37,12 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          maxLength={30}
           className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="Enter task title"
           required
         />
+        <p className="text-sm text-muted-foreground">{title.length}/30 characters</p>
       </div>
 
       {/* Content Input */}
@@ -48,15 +50,16 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
         <label htmlFor="content" className="block text-sm font-medium text-foreground">
           Task Content
         </label>
-        <textarea
+        <input
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          rows={4}
+          maxLength={35}
           className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="Describe your task here"
           required
         />
+        <p className="text-sm text-muted-foreground">{content.length}/35 characters</p>
       </div>
 
       {/* Recurring Checkbox */}

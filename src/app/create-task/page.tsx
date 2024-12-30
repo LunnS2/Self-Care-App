@@ -13,14 +13,22 @@ const CreateTaskPage = () => {
   const me = useQuery(api.users.getMe);
   const router = useRouter();
 
-  const handleTaskSubmit = async (title: string, content: string, recurring: boolean) => {
+  const handleTaskSubmit = async (
+    title: string,
+    content: string,
+    recurring: boolean
+  ) => {
     try {
+      const lastCompleted = recurring ? Date.now() : undefined;
+
       await addTaskMutation({
         title,
         content,
         createdBy: me!._id,
         recurring,
+        lastCompleted,
       });
+
       alert("Task created successfully!");
       router.push("/user-tasks");
     } catch (error) {
