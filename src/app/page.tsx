@@ -3,7 +3,7 @@
 "use client";
 
 import ThemeSwitch from "@/components/theme-switch";
-import { UserButton } from "@clerk/nextjs";
+import { SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -25,9 +25,11 @@ export default function Home() {
             Take a moment for yourself. Explore resources that help you unwind,
             reflect, and grow.
           </p>
-          <button className="bg-primary hover:bg-primary/80 text-primary-foreground font-semibold py-2 px-6 rounded-full">
-            Start Your Journey
-          </button>
+          <SignInButton mode="redirect">
+            <button className="bg-primary hover:bg-primary/80 text-primary-foreground font-semibold py-2 px-6 rounded-full">
+              Start Your Journey
+            </button>
+          </SignInButton>
         </section>
       </div>
       <div className="text-center align-middle justify-center mt-4">

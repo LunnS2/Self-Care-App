@@ -4,11 +4,18 @@
 
 import React from "react";
 import TaskForm from "@/components/task-form";
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 
 const CreateTaskPage = () => {
+  // Get authentication status
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  // If authentication is loading or user is not authenticated, return null
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
   const addTaskMutation = useMutation(api.tasks.addTask);
   const me = useQuery(api.users.getMe);
   const router = useRouter();

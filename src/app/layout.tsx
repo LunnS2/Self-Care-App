@@ -27,9 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
               <SideBar />
               <header className="absolute top-0 right-0 p-2">
-                <SignedOut>
-                  <SignInButton />
-                </SignedOut>
                 <SignedIn>
                   <UserButton />
                 </SignedIn>

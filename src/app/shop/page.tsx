@@ -3,10 +3,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 
 const Shop = () => {
+  // Get authentication status
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  // If authentication is loading or user is not authenticated, return null
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 

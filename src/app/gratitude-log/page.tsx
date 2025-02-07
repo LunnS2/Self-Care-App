@@ -1,6 +1,7 @@
 // self-care-app/src/app/gratitude-log/page.tsx
 "use client";
 
+import { useConvexAuth } from "convex/react";
 import React, { useState, useEffect } from "react";
 
 interface GratitudeItem {
@@ -11,6 +12,13 @@ interface GratitudeItem {
 }
 
 const GratitudeLog: React.FC = () => {
+  // Get authentication status
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  // If authentication is loading or user is not authenticated, return null
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
   const [gratitudes, setGratitudes] = useState<GratitudeItem[]>([]);
   const [inputValue, setInputValue] = useState("");
 

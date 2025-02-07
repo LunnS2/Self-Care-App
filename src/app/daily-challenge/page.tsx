@@ -4,6 +4,7 @@
 
 import React, { useState } from "react";
 import challenges from "../../data/challenges.json";
+import { useConvexAuth } from "convex/react";
 
 type Challenge = {
   category: string;
@@ -12,6 +13,13 @@ type Challenge = {
 };
 
 const DailyChallenge = () => {
+  // Get authentication status
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  // If authentication is loading or user is not authenticated, return null
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
   const [selectedDifficulty, setSelectedDifficulty] = useState<
     "easy" | "medium" | "hard"
   >("easy");

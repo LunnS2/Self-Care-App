@@ -2,12 +2,19 @@
 
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import React from "react";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 
 const UserTasks = () => {
+  // Get authentication status
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  // If authentication is loading or user is not authenticated, return null
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
   const router = useRouter();
   const me = useQuery(api.users.getMe);
 

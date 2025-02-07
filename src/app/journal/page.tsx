@@ -3,12 +3,19 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { TrashIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 const Journal = () => {
+  // Get authentication status
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  // If authentication is loading or user is not authenticated, return null
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
   const [journal, setJournal] = useState({ title: "", content: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [activeNote, setActiveNote] = useState<{

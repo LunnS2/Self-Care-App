@@ -2,9 +2,17 @@
 
 "use client";
 
+import { useConvexAuth } from "convex/react";
 import React, { useState, useEffect } from "react";
 
 function Meditation() {
+  // Get authentication status
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  // If authentication is loading or user is not authenticated, return null
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [initialTime, setInitialTime] = useState<number>(0);
   const [isCounting, setIsCounting] = useState<boolean>(false);
