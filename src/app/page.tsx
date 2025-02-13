@@ -9,10 +9,19 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-12">
+        {/* Logo */}
+        <div className="flex items-center justify-center mb-8">
+          <img
+            src="/self-care-logo.svg"
+            alt="Self-care logo"
+            className="w-14 h-auto"
+          />
+        </div>
         {/* Header Section */}
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-foreground">
-            Welcome to Your Self-Care Journey
+            Welcome to Your Self-Care Journey with{" "}
+            <span className="text-primary">Dlife</span>
           </h1>
           <p className="mt-2 text-xl text-muted-foreground">
             A place to relax, recharge, and focus on your well-being.

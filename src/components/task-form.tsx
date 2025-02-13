@@ -26,7 +26,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-card p-6 rounded-lg shadow-lg">
+    <form onSubmit={handleSubmit} className="space-y-6 p-6">
       {/* Title Input */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-foreground">
