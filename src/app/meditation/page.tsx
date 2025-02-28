@@ -57,7 +57,7 @@ function Meditation() {
   }, [isCounting, timeLeft, timerEnded, resetting, mounted]);
 
   useEffect(() => {
-    const newEndSound = new Audio("/audios/timer-end-audio.wav");
+    const newEndSound = new Audio("/audios/timer-end.mp3");
     setEndSound(newEndSound);
   }, []);
 
