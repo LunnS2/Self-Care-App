@@ -1,4 +1,4 @@
-// self-care-app\src\app\meditation\page.tsx
+// self-care-app/src/app/meditation/page.tsx
 
 "use client";
 
@@ -6,13 +6,12 @@ import { useConvexAuth } from "convex/react";
 import React, { useState, useEffect } from "react";
 
 function Meditation() {
-  // Get authentication status
   const { isAuthenticated, isLoading } = useConvexAuth();
 
-  // If authentication is loading or user is not authenticated, return null
   if (isLoading || !isAuthenticated) {
     return null;
   }
+
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [initialTime, setInitialTime] = useState<number>(0);
   const [isCounting, setIsCounting] = useState<boolean>(false);
@@ -58,7 +57,7 @@ function Meditation() {
   }, [isCounting, timeLeft, timerEnded, resetting, mounted]);
 
   useEffect(() => {
-    const newEndSound = new Audio("/audios/timer-end.wav");
+    const newEndSound = new Audio("/audios/timer-end-audio.wav");
     setEndSound(newEndSound);
   }, []);
 
@@ -110,19 +109,19 @@ function Meditation() {
   }, [resetting]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8 ml-16 md:ml-20">
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-12">
         {/* Header */}
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold">Meditation Timer</h1>
-          <p className="mt-2 text-lg text-muted-foreground">
+          <h1 className="text-3xl md:text-4xl font-bold">Meditation Timer</h1>
+          <p className="mt-2 text-base md:text-lg text-muted-foreground">
             Customize your meditation session with soothing sounds and a timer.
           </p>
         </header>
 
         {/* Audio Selector */}
         <div className="text-center mb-6">
-          <label className="block text-muted-foreground mb-2">
+          <label className="block text-base md:text-lg text-muted-foreground mb-2">
             Select Background Sound
           </label>
           <select
@@ -130,11 +129,11 @@ function Meditation() {
             onChange={handleAudioChange}
             className="px-4 py-2 border text-center border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="/audios/nature.wav">Nature Sounds</option>
-            <option value="/audios/ocean.wav">Calm Ocean</option>
-            <option value="/audios/rain.wav">Rainy Day</option>
-            <option value="/audios/birds.wav">Forest Birds</option>
-            <option value="/audios/night.wav">Peaceful Night</option>
+            <option value="/audios/nature-audio.wav">Nature Sounds</option>
+            <option value="/audios/ocean-audio.wav">Calm Ocean</option>
+            <option value="/audios/rain-audio.wav">Rainy Day</option>
+            <option value="/audios/birds-audio.wav">Forest Birds</option>
+            <option value="/audios/night-audio.wav">Peaceful Night</option>
           </select>
         </div>
 

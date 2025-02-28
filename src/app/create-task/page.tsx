@@ -16,6 +16,7 @@ const CreateTaskPage = () => {
   if (isLoading || !isAuthenticated) {
     return null;
   }
+
   const addTaskMutation = useMutation(api.tasks.addTask);
   const me = useQuery(api.users.getMe);
   const router = useRouter();
@@ -45,12 +46,13 @@ const CreateTaskPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-6 md:p-24">
-      <div className="w-full max-w-lg bg-card rounded-lg shadow-lg p-8">
-        <h1 className="text-4xl font-bold mb-6 text-center text-foreground">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground 
+      px-6 md:px-12 lg:px-24 transition-all duration-300 ml-16 md:ml-20">
+      <div className="w-full max-w-lg bg-card rounded-lg shadow-lg p-6 md:p-8">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-center text-foreground">
           Create New Task
         </h1>
-        <p className="text-muted-foreground text-center mb-4">
+        <p className="text-base md:text-lg text-muted-foreground text-center mb-4">
           Organize your tasks and prioritize your well-being.
         </p>
         <TaskForm onSubmit={handleTaskSubmit} />

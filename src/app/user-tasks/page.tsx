@@ -8,10 +8,8 @@ import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 
 const UserTasks = () => {
-  // Get authentication status
   const { isAuthenticated, isLoading } = useConvexAuth();
 
-  // If authentication is loading or user is not authenticated, return null
   if (isLoading || !isAuthenticated) {
     return null;
   }
@@ -19,7 +17,6 @@ const UserTasks = () => {
   const me = useQuery(api.users.getMe);
 
   const userId = me?._id;
-
   const tasks = useQuery(api.tasks.getTasks, userId ? { userId } : "skip");
 
   const deleteTask = useMutation(api.tasks.deleteTask);
@@ -30,8 +27,8 @@ const UserTasks = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
-      <h1 className="text-4xl font-bold mb-8">Your Tasks</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8 ml-16 md:ml-20">
+      <h1 className="text-3xl md:text-4xl font-bold mb-8">Your Tasks</h1>
 
       <button
         className="top-0 bg-primary text-primary-foreground font-medium px-4 py-2 rounded hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 mb-4"
@@ -76,7 +73,7 @@ const UserTasks = () => {
           </div>
         ))
       ) : (
-        <p className="text-muted-foreground mt-4">
+        <p className="text-base md:text-lg text-muted-foreground mt-4">
           No tasks found. Create one to get started!
         </p>
       )}

@@ -7,25 +7,23 @@ import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 
 const Shop = () => {
-  // Get authentication status
   const { isAuthenticated, isLoading } = useConvexAuth();
 
-  // If authentication is loading or user is not authenticated, return null
   if (isLoading || !isAuthenticated) {
     return null;
   }
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Fetch the logged-in user data
   const getMe = useQuery(api.users.getMe);
   const buyGift = useMutation(api.users.buyGift);
 
   const handleBuyGift = async () => {
-    if (!getMe) return; // Safety check in case user data is still loading
+    if (!getMe) return;
 
     setLoading(true);
-    setMessage(null); // Reset message before attempting purchase
+    setMessage(null);
 
     try {
       const giftUrl = await buyGift({
@@ -42,14 +40,14 @@ const Shop = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8">
-      <h1 className="text-4xl font-bold mb-6">Shop</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8 ml-16 md:ml-20">
+      <h1 className="text-3xl md:text-4xl font-bold mb-6">Shop</h1>
       
       {/* Loading State */}
       {!getMe ? (
         <p className="text-muted">Loading user data...</p>
       ) : (
-        <div className="text-center bg-card p-6 rounded-lg shadow-lg">
+        <div className="text-center bg-card p-6 rounded-lg shadow-lg w-full max-w-lg">
           <p className="text-lg font-semibold mb-4">Points: {getMe.points}</p>
           
           {/* Buy Button */}
@@ -61,7 +59,6 @@ const Shop = () => {
                 ? "bg-muted cursor-not-allowed"
                 : "bg-primary hover:bg-primary/90"
             }`}
-            
           >
             {loading ? "Processing..." : "Buy Gift (10 Points)"}
           </button>

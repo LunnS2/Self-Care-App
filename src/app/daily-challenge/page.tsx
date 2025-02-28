@@ -20,6 +20,7 @@ const DailyChallenge = () => {
   if (isLoading || !isAuthenticated) {
     return null;
   }
+
   const [selectedDifficulty, setSelectedDifficulty] = useState<
     "easy" | "medium" | "hard"
   >("easy");
@@ -35,28 +36,28 @@ const DailyChallenge = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-24">
-      <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-12">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-semibold text-foreground">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground 
+      px-6 md:px-12 lg:px-24 transition-all duration-300 ml-16 md:ml-20">
+      <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-6 md:p-12">
+        <header className="text-center mb-6 md:mb-8">
+          <h1 className="text-3xl md:text-4xl font-semibold text-foreground">
             Daily Challenge
           </h1>
-          <p className="mt-2 text-lg text-muted-foreground">
+          <p className="mt-2 text-base md:text-lg text-muted-foreground">
             Choose a difficulty and roll for your challenge.
           </p>
         </header>
 
         {/* Difficulty Selection */}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-4 md:mb-6">
           <select
             id="difficulty"
             value={selectedDifficulty}
             onChange={(e) =>
-              setSelectedDifficulty(
-                e.target.value as "easy" | "medium" | "hard"
-              )
+              setSelectedDifficulty(e.target.value as "easy" | "medium" | "hard")
             }
-            className="px-4 py-2 border text-center border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="px-4 py-2 border border-muted rounded-md focus:outline-none 
+            focus:ring-2 focus:ring-primary text-sm md:text-base"
           >
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
@@ -65,10 +66,11 @@ const DailyChallenge = () => {
         </div>
 
         {/* Roll for Challenge Button */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-4 md:mb-6">
           <button
             onClick={getRandomChallenge}
-            className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/80 focus:outline-none"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-md 
+            hover:bg-primary/80 focus:outline-none text-sm md:text-base"
           >
             Roll for Challenge
           </button>
@@ -76,18 +78,18 @@ const DailyChallenge = () => {
 
         {/* Displaying Challenge */}
         {challenge && (
-          <div className="mt-6 p-6 bg-card text-card-foreground border border-card-foreground rounded-lg shadow-md dark:bg-background dark:text-foreground dark:border-background">
-          <h2 className="text-xl font-semibold text-primary mb-2">
-            {challenge.category}
-          </h2>
-          <p className="text-muted-foreground dark:text-muted-foreground">
-            {challenge.description}
-          </p>
-        </div>
-        
+          <div className="mt-4 md:mt-6 p-4 md:p-6 bg-card text-card-foreground border border-card-foreground 
+          rounded-lg shadow-md dark:bg-background dark:text-foreground dark:border-background">
+            <h2 className="text-lg md:text-xl font-semibold text-primary mb-2">
+              {challenge.category}
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground dark:text-muted-foreground">
+              {challenge.description}
+            </p>
+          </div>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

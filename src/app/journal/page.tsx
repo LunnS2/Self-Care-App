@@ -16,6 +16,7 @@ const Journal = () => {
   if (isLoading || !isAuthenticated) {
     return null;
   }
+
   const [journal, setJournal] = useState({ title: "", content: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [activeNote, setActiveNote] = useState<{
@@ -96,7 +97,7 @@ const Journal = () => {
   );
 
   return (
-    <div className="flex flex-col items-center p-8 min-h-screen bg-background text-foreground">
+    <div className="flex flex-col items-center p-8 min-h-screen bg-background text-foreground ml-16 md:ml-20">
       <h1 className="text-4xl font-bold mb-8">Journal</h1>
 
       {/* Search Bar */}
@@ -165,7 +166,7 @@ const Journal = () => {
 
       {/* Delete Confirmation Modal */}
       {confirmDelete && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-card p-6 rounded-md shadow-md">
             <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
             <p className="mb-4">Are you sure you want to delete this note?</p>
@@ -189,7 +190,7 @@ const Journal = () => {
 
       {/* Edit Note Modal */}
       {activeNote && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-card p-6 rounded-md shadow-md w-full max-w-2xl relative">
             <button
               onClick={() => setActiveNote(null)}

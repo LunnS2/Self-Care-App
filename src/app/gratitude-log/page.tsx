@@ -1,4 +1,5 @@
 // self-care-app/src/app/gratitude-log/page.tsx
+
 "use client";
 
 import { useConvexAuth } from "convex/react";
@@ -19,35 +20,29 @@ const GratitudeLog: React.FC = () => {
   if (isLoading || !isAuthenticated) {
     return null;
   }
+
   const [gratitudes, setGratitudes] = useState<GratitudeItem[]>([]);
   const [inputValue, setInputValue] = useState("");
 
-  // Load saved gratitudes from localStorage
   useEffect(() => {
     const storedGratitudes = localStorage.getItem("gratitudes");
     if (storedGratitudes) {
       const parsedGratitudes = JSON.parse(storedGratitudes);
-      const gratitudesWithVisibility = parsedGratitudes.map((gratitude: GratitudeItem, index: number) => ({
-        ...gratitude,
-        visible: false, // Initially set visibility to false
-      }));
-      setGratitudes(gratitudesWithVisibility);
+      setGratitudes(parsedGratitudes.map((g: GratitudeItem) => ({ ...g, visible: false })));
     }
   }, []);
 
-  // Save gratitudes to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("gratitudes", JSON.stringify(gratitudes));
   }, [gratitudes]);
 
-  // Add new gratitude and trigger the visibility with bounce
   const addGratitude = () => {
     if (inputValue.trim()) {
       const newGratitude: GratitudeItem = {
         text: inputValue.trim(),
         position: getRandomPosition(),
         id: Date.now(),
-        visible: true, // Set visibility to true when it's added
+        visible: true,
       };
       setGratitudes((prev) => [...prev, newGratitude]);
       setInputValue("");
@@ -55,8 +50,8 @@ const GratitudeLog: React.FC = () => {
   };
 
   const clearGratitudes = () => {
-    setGratitudes([]); // Clear the state
-    localStorage.removeItem("gratitudes"); // Clear from localStorage
+    setGratitudes([]);
+    localStorage.removeItem("gratitudes");
   };
 
   const getRandomPosition = () => ({
@@ -64,60 +59,40 @@ const GratitudeLog: React.FC = () => {
     left: `${Math.floor(Math.random() * 90)}%`,
   });
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      addGratitude();
-    }
-  };
-
-  // Trigger bounce animation for existing gratitudes after page refresh
-  useEffect(() => {
-    if (gratitudes.length > 0) {
-      gratitudes.forEach((gratitude, index) => {
-        setTimeout(() => {
-          setGratitudes((prev) => 
-            prev.map((item, idx) => 
-              idx === index ? { ...item, visible: true } : item
-            )
-          );
-        }, index * 300); // Each item will appear with a slight delay
-      });
-    }
-  }, [gratitudes.length]); // Trigger this effect only once when gratitudes are loaded
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-6 md:p-12">
-      {/* Card Container */}
-      <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-8 md:p-12 relative overflow-hidden">
-        {/* Header */}
-        <header className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-foreground">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground 
+      px-6 md:px-12 lg:px-24 transition-all duration-300 ml-16 md:ml-20">
+      <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-6 md:p-12 relative overflow-hidden">
+        <header className="text-center mb-6 md:mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground">
             Gratitude Log
           </h1>
-          <p className="text-lg text-muted-foreground mt-2">
+          <p className="mt-2 text-base md:text-lg text-muted-foreground">
             A space to reflect on the moments you're thankful for.
           </p>
         </header>
 
         {/* Input Section */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-3 mb-6">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-3 mb-4 md:mb-6">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
             placeholder="What are you grateful for today?"
-            className="flex-1 px-4 py-2 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 px-4 py-2 rounded-md border border-input bg-background 
+            text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm md:text-base"
           />
           <button
             onClick={addGratitude}
-            className="px-6 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-all"
+            className="px-6 py-2 rounded-md bg-primary text-primary-foreground 
+            hover:bg-primary/80 transition-all text-sm md:text-base"
           >
             Add
           </button>
           <button
             onClick={clearGratitudes}
-            className="px-6 py-2 rounded-md bg-muted hover:bg-muted/80 text-foreground transition-all"
+            className="px-6 py-2 rounded-md bg-muted hover:bg-muted/80 text-foreground 
+            transition-all text-sm md:text-base"
           >
             Clear
           </button>
@@ -125,12 +100,11 @@ const GratitudeLog: React.FC = () => {
 
         {/* Floating Gratitude Messages */}
         <div className="absolute inset-0 pointer-events-none">
-          {gratitudes.map((gratitude, index) => (
+          {gratitudes.map((gratitude) => (
             <div
               key={gratitude.id}
-              className={`absolute text-sm md:text-lg font-medium text-primary transition-all ${
-                gratitude.visible ? "animate-bounce" : "opacity-0"
-              }`}
+              className={`absolute text-sm md:text-lg font-medium text-primary 
+              transition-all ${gratitude.visible ? "animate-bounce" : "opacity-0"}`}
               style={gratitude.position}
             >
               {gratitude.text}
@@ -138,9 +112,9 @@ const GratitudeLog: React.FC = () => {
           ))}
         </div>
 
-        {/* Optional Empty State */}
+        {/* Empty State */}
         {gratitudes.length === 0 && (
-          <p className="text-center text-muted-foreground mt-4">
+          <p className="text-center text-base md:text-lg text-muted-foreground mt-4">
             Add something you're grateful for to see it here!
           </p>
         )}
