@@ -129,11 +129,11 @@ function Meditation() {
             onChange={handleAudioChange}
             className="px-4 py-2 border text-center border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="/audios/nature-audio.wav">Nature Sounds</option>
-            <option value="/audios/ocean-audio.wav">Calm Ocean</option>
-            <option value="/audios/rain-audio.wav">Rainy Day</option>
-            <option value="/audios/birds-audio.wav">Forest Birds</option>
-            <option value="/audios/night-audio.wav">Peaceful Night</option>
+            <option value="/audios/nature.mp3">Nature Sounds</option>
+            <option value="/audios/ocean.mp3">Calm Ocean</option>
+            <option value="/audios/rain.mp3">Rainy Day</option>
+            <option value="/audios/birds.mp3">Forest Birds</option>
+            <option value="/audios/night.mp3">Peaceful Night</option>
           </select>
         </div>
 
