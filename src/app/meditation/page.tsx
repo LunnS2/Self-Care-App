@@ -58,7 +58,7 @@ function Meditation() {
   }, [isCounting, timeLeft, timerEnded, resetting, mounted]);
 
   useEffect(() => {
-    const newEndSound = new Audio("/audios/timer-end.mp3");
+    const newEndSound = new Audio("/audios/timer-end.wav");
     setEndSound(newEndSound);
   }, []);
 
@@ -130,11 +130,11 @@ function Meditation() {
             onChange={handleAudioChange}
             className="px-4 py-2 border text-center border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="/audios/nature.mp3">Nature Sounds</option>
-            <option value="/audios/ocean.mp3">Calm Ocean</option>
-            <option value="/audios/rain.mp3">Rainy Day</option>
-            <option value="/audios/birds.mp3">Forest Birds</option>
-            <option value="/audios/night.mp3">Peaceful Night</option>
+            <option value="/audios/nature.wav">Nature Sounds</option>
+            <option value="/audios/ocean.wav">Calm Ocean</option>
+            <option value="/audios/rain.wav">Rainy Day</option>
+            <option value="/audios/birds.wav">Forest Birds</option>
+            <option value="/audios/night.wav">Peaceful Night</option>
           </select>
         </div>
 
@@ -197,7 +197,7 @@ function Meditation() {
             onClick={handlePause}
             className="bg-muted text-muted-foreground py-2 px-6 rounded-lg hover:bg-muted/80"
           >
-            Pause Sound
+            Stop Sound
           </button>
         </div>
       </div>
