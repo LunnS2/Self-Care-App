@@ -1,5 +1,3 @@
-// self-care-app/src/app/create-task/page.tsx
-
 "use client";
 
 import React from "react";
@@ -9,17 +7,14 @@ import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 
 const CreateTaskPage = () => {
-  // Get authentication status
   const { isAuthenticated, isLoading } = useConvexAuth();
-
-  // If authentication is loading or user is not authenticated, return null
-  if (isLoading || !isAuthenticated) {
-    return null;
-  }
-
   const addTaskMutation = useMutation(api.tasks.addTask);
   const me = useQuery(api.users.getMe);
   const router = useRouter();
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   const handleTaskSubmit = async (
     title: string,
@@ -46,8 +41,10 @@ const CreateTaskPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground 
-      px-6 md:px-12 lg:px-24 transition-all duration-300 ml-16 md:ml-20">
+    <main
+      className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground 
+      px-6 md:px-12 lg:px-24 transition-all duration-300 ml-16 md:ml-20"
+    >
       <div className="w-full max-w-lg bg-card rounded-lg shadow-lg p-6 md:p-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-center text-foreground">
           Create New Task

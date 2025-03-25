@@ -1,5 +1,3 @@
-//self-care-app\src\app\journal\page.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -9,14 +7,7 @@ import { Id } from "../../../convex/_generated/dataModel";
 import { TrashIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 const Journal = () => {
-  // Get authentication status
   const { isAuthenticated, isLoading } = useConvexAuth();
-
-  // If authentication is loading or user is not authenticated, return null
-  if (isLoading || !isAuthenticated) {
-    return null;
-  }
-
   const [journal, setJournal] = useState({ title: "", content: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [activeNote, setActiveNote] = useState<{
@@ -24,15 +15,22 @@ const Journal = () => {
     title: string;
     content: string;
   } | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<Id<"journal"> | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<Id<"journal"> | null>(
+    null
+  );
 
   const me = useQuery(api.users.getMe);
-  const userId = me?._id;
-
-  const notes = useQuery(api.journal.getNotes, userId ? { userId } : "skip");
+  const notes = useQuery(
+    api.journal.getNotes,
+    me?._id ? { userId: me._id } : "skip"
+  );
   const addNote = useMutation(api.journal.addNote);
   const deleteNote = useMutation(api.journal.deleteNote);
   const updateNote = useMutation(api.journal.updateNote);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,8 +147,12 @@ const Journal = () => {
             className="bg-card p-4 rounded-md shadow-md hover:shadow-lg transition cursor-pointer relative"
             onClick={() => setActiveNote(note)}
           >
-            <h3 className="text-lg font-semibold mb-2 truncate">{note.title}</h3>
-            <p className="text-sm text-muted-foreground truncate">{note.content}</p>
+            <h3 className="text-lg font-semibold mb-2 truncate">
+              {note.title}
+            </h3>
+            <p className="text-sm text-muted-foreground truncate">
+              {note.content}
+            </p>
             <button
               onClick={(e) => {
                 e.stopPropagation();

@@ -1,17 +1,10 @@
-// self-care-app/src/app/meditation/page.tsx
-
 "use client";
 
 import { useConvexAuth } from "convex/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 function Meditation() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-
-  if (isLoading || !isAuthenticated) {
-    return null;
-  }
-
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [initialTime, setInitialTime] = useState<number>(0);
   const [isCounting, setIsCounting] = useState<boolean>(false);
@@ -23,11 +16,22 @@ function Meditation() {
   const [resetting, setResetting] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
 
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
+
+  // Memoized functions
+  const formatTime = useCallback((seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  }, []);
+
   const handleAudioChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedAudio(e.target.value);
   };
 
-  const handlePlay = () => {
+  const handlePlay = useCallback(() => {
     if (!audio) {
       const newAudio = new Audio(selectedAudio);
       newAudio.loop = true;
@@ -38,12 +42,13 @@ function Meditation() {
       audio.loop = true;
       audio.play();
     }
-  };
+  }, [audio, selectedAudio]);
 
-  const handlePause = () => {
+  const handlePause = useCallback(() => {
     audio?.pause();
-  };
+  }, [audio]);
 
+  // Timer effects
   useEffect(() => {
     if (isCounting && timeLeft > 0) {
       const interval = setInterval(
@@ -59,6 +64,7 @@ function Meditation() {
   useEffect(() => {
     const newEndSound = new Audio("/audios/timer-end.mp3");
     setEndSound(newEndSound);
+    return () => newEndSound.pause(); // Cleanup
   }, []);
 
   useEffect(() => {
@@ -67,34 +73,39 @@ function Meditation() {
     }
   }, [timerEnded, endSound]);
 
-  const startTimer = () => {
+  // Timer controls
+  const startTimer = useCallback(() => {
     if (timeLeft > 0) {
       setIsCounting(true);
       setTimerEnded(false);
     }
-  };
+  }, [timeLeft]);
 
-  const incrementTimer = () => setTimeLeft((prevTime) => prevTime + 60);
-  const incrementFiveMinutes = () =>
-    setTimeLeft((prevTime) => prevTime + 5 * 60);
-  const decrementTimer = () =>
-    timeLeft > 60 && setTimeLeft((prevTime) => prevTime - 60);
-  const decrementFiveMinutes = () =>
-    timeLeft > 5 * 60 && setTimeLeft((prevTime) => prevTime - 5 * 60);
+  const incrementTimer = useCallback(
+    () => setTimeLeft((prevTime) => prevTime + 60),
+    []
+  );
+  const incrementFiveMinutes = useCallback(
+    () => setTimeLeft((prevTime) => prevTime + 5 * 60),
+    []
+  );
+  const decrementTimer = useCallback(
+    () => timeLeft > 60 && setTimeLeft((prevTime) => prevTime - 60),
+    [timeLeft]
+  );
+  const decrementFiveMinutes = useCallback(
+    () => timeLeft > 5 * 60 && setTimeLeft((prevTime) => prevTime - 5 * 60),
+    [timeLeft]
+  );
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  const resetTimer = () => {
+  const resetTimer = useCallback(() => {
     setResetting(true);
     setIsCounting(false);
     setTimeLeft(initialTime);
     setTimerEnded(false);
-  };
+  }, [initialTime]);
 
+  // Initial setup
   useEffect(() => {
     const defaultTime = 15 * 60;
     setInitialTime(defaultTime);
@@ -104,7 +115,8 @@ function Meditation() {
 
   useEffect(() => {
     if (resetting) {
-      setTimeout(() => setResetting(false), 500);
+      const timeout = setTimeout(() => setResetting(false), 500);
+      return () => clearTimeout(timeout);
     }
   }, [resetting]);
 
