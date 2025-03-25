@@ -1,5 +1,3 @@
-// self-care-app/src/app/user-tasks/page.tsx
-
 "use client";
 
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
@@ -9,18 +7,18 @@ import { useRouter } from "next/navigation";
 
 const UserTasks = () => {
   const { isAuthenticated, isLoading } = useConvexAuth();
+  const router = useRouter();
+  const me = useQuery(api.users.getMe);
+  const tasks = useQuery(
+    api.tasks.getTasks,
+    me?._id ? { userId: me._id } : "skip"
+  );
+  const deleteTask = useMutation(api.tasks.deleteTask);
+  const completeTask = useMutation(api.tasks.completeTask);
 
   if (isLoading || !isAuthenticated) {
     return null;
   }
-  const router = useRouter();
-  const me = useQuery(api.users.getMe);
-
-  const userId = me?._id;
-  const tasks = useQuery(api.tasks.getTasks, userId ? { userId } : "skip");
-
-  const deleteTask = useMutation(api.tasks.deleteTask);
-  const completeTask = useMutation(api.tasks.completeTask);
 
   if (!me) {
     return <p className="text-muted-foreground">Loading...</p>;
@@ -49,7 +47,9 @@ const UserTasks = () => {
               {task.recurring ? (
                 <p className="text-sm text-muted-foreground mt-2">Daily</p>
               ) : (
-                <p className="text-sm text-muted-foreground mt-2">One Time Only</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  One Time Only
+                </p>
               )}
             </div>
             {!task.completed && (

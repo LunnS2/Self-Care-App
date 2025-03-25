@@ -1,5 +1,3 @@
-// self-care-app/src/app/gratitude-log/page.tsx
-
 "use client";
 
 import { useConvexAuth } from "convex/react";
@@ -13,14 +11,7 @@ interface GratitudeItem {
 }
 
 const GratitudeLog: React.FC = () => {
-  // Get authentication status
   const { isAuthenticated, isLoading } = useConvexAuth();
-
-  // If authentication is loading or user is not authenticated, return null
-  if (isLoading || !isAuthenticated) {
-    return null;
-  }
-
   const [gratitudes, setGratitudes] = useState<GratitudeItem[]>([]);
   const [inputValue, setInputValue] = useState("");
 
@@ -28,13 +19,24 @@ const GratitudeLog: React.FC = () => {
     const storedGratitudes = localStorage.getItem("gratitudes");
     if (storedGratitudes) {
       const parsedGratitudes = JSON.parse(storedGratitudes);
-      setGratitudes(parsedGratitudes.map((g: GratitudeItem) => ({ ...g, visible: false })));
+      setGratitudes(
+        parsedGratitudes.map((g: GratitudeItem) => ({ ...g, visible: false }))
+      );
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("gratitudes", JSON.stringify(gratitudes));
   }, [gratitudes]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
+
+  const getRandomPosition = () => ({
+    top: `${Math.floor(Math.random() * 90)}%`,
+    left: `${Math.floor(Math.random() * 90)}%`,
+  });
 
   const addGratitude = () => {
     if (inputValue.trim()) {
@@ -54,21 +56,18 @@ const GratitudeLog: React.FC = () => {
     localStorage.removeItem("gratitudes");
   };
 
-  const getRandomPosition = () => ({
-    top: `${Math.floor(Math.random() * 90)}%`,
-    left: `${Math.floor(Math.random() * 90)}%`,
-  });
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground 
-      px-6 md:px-12 lg:px-24 transition-all duration-300 ml-16 md:ml-20">
+    <main
+      className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground 
+      px-6 md:px-12 lg:px-24 transition-all duration-300 ml-16 md:ml-20"
+    >
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-6 md:p-12 relative overflow-hidden">
         <header className="text-center mb-6 md:mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground">
             Gratitude Log
           </h1>
           <p className="mt-2 text-base md:text-lg text-muted-foreground">
-            A space to reflect on the moments you're thankful for.
+            A space to reflect on the moments you&apos;re thankful for.
           </p>
         </header>
 
@@ -115,7 +114,7 @@ const GratitudeLog: React.FC = () => {
         {/* Empty State */}
         {gratitudes.length === 0 && (
           <p className="text-center text-base md:text-lg text-muted-foreground mt-4">
-            Add something you're grateful for to see it here!
+            Add something you&apos;re grateful for to see it here!
           </p>
         )}
       </div>

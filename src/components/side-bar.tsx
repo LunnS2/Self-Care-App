@@ -1,18 +1,15 @@
-// self-care-app\src\components\side-bar.tsx
-
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import NavLink from "./nav-link";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import TaskIcon from "@mui/icons-material/Task";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ChallengeIcon from "@mui/icons-material/EmojiEvents";
 import GratitudeIcon from "@mui/icons-material/Favorite";
 import MeditationIcon from "@mui/icons-material/SelfImprovement";
 import JournalIcon from "@mui/icons-material/Book";
-import StorefrontIcon from '@mui/icons-material/Storefront';
+import StorefrontIcon from "@mui/icons-material/Storefront";
 
 function SideBar() {
   const [isMounted, setIsMounted] = useState(false);
@@ -28,10 +25,26 @@ function SideBar() {
       <nav className="flex flex-col space-y-6 text-white">
         <NavLink href="/" icon={<HomeIcon />} label="Home" />
         <NavLink href="/create-task" icon={<TaskIcon />} label="Add Tasks" />
-        <NavLink href="/user-tasks" icon={<AssignmentIcon />} label="Your Tasks" />
-        <NavLink href="/daily-challenge" icon={<ChallengeIcon />} label="Daily Challenge" />
-        <NavLink href="/gratitude-log" icon={<GratitudeIcon />} label="Gratitude" />
-        <NavLink href="/meditation" icon={<MeditationIcon />} label="Meditation" />
+        <NavLink
+          href="/user-tasks"
+          icon={<AssignmentIcon />}
+          label="Your Tasks"
+        />
+        <NavLink
+          href="/daily-challenge"
+          icon={<ChallengeIcon />}
+          label="Daily Challenge"
+        />
+        <NavLink
+          href="/gratitude-log"
+          icon={<GratitudeIcon />}
+          label="Gratitude"
+        />
+        <NavLink
+          href="/meditation"
+          icon={<MeditationIcon />}
+          label="Meditation"
+        />
         <NavLink href="/journal" icon={<JournalIcon />} label="Journal" />
         <NavLink href="/shop" icon={<StorefrontIcon />} label="Shop" />
       </nav>

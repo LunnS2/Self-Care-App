@@ -1,11 +1,9 @@
-//self-care-app\src\app\layout.tsx
-
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import SideBar from "@/components/side-bar";
 import ConvexClientProvider from "@/providers/convex-client-provider";
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton  } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Self-Care-App",
@@ -38,25 +36,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </ClerkProvider>
   );
 }
-
-
-/*
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <ClerkProvider>
-      <html lang="en">
-        <body>
-          <header>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
-          <main>{children}</main>
-        </body>
-      </html>
-    </ClerkProvider>
-  )
-} */
