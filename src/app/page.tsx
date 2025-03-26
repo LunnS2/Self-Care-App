@@ -1,9 +1,8 @@
-// self-care-app\src\app\page.tsx
-
 "use client";
 
 import ThemeSwitch from "@/components/theme-switch";
 import { SignInButton } from "@clerk/nextjs";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -12,10 +11,13 @@ export default function Home() {
       <div className="w-full max-w-4xl bg-card rounded-lg shadow-lg p-6 md:p-12">
         {/* Logo */}
         <div className="flex items-center justify-center mb-6 md:mb-8">
-          <img
+          <Image
             src="/self-care-logo.svg"
             alt="Self-care logo"
+            width={56}
+            height={56}
             className="w-12 h-auto md:w-14"
+            priority
           />
         </div>
 

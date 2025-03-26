@@ -11,14 +11,9 @@ function Meditation() {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [endSound, setEndSound] = useState<HTMLAudioElement | null>(null);
   const [timerEnded, setTimerEnded] = useState<boolean>(false);
-  const [selectedAudio, setSelectedAudio] =
-    useState<string>("/audios/nature.mp3");
+  const [selectedAudio, setSelectedAudio] = useState<string>("/audios/nature.mp3");
   const [resetting, setResetting] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
-
-  if (isLoading || !isAuthenticated) {
-    return null;
-  }
 
   // Memoized functions
   const formatTime = useCallback((seconds: number) => {
@@ -48,32 +43,6 @@ function Meditation() {
     audio?.pause();
   }, [audio]);
 
-  // Timer effects
-  useEffect(() => {
-    if (isCounting && timeLeft > 0) {
-      const interval = setInterval(
-        () => setTimeLeft((prevTime) => prevTime - 1),
-        1000
-      );
-      return () => clearInterval(interval);
-    } else if (timeLeft === 0 && !timerEnded && !resetting && mounted) {
-      setTimerEnded(true);
-    }
-  }, [isCounting, timeLeft, timerEnded, resetting, mounted]);
-
-  useEffect(() => {
-    const newEndSound = new Audio("/audios/timer-end.mp3");
-    setEndSound(newEndSound);
-    return () => newEndSound.pause(); // Cleanup
-  }, []);
-
-  useEffect(() => {
-    if (timerEnded && endSound) {
-      endSound.play();
-    }
-  }, [timerEnded, endSound]);
-
-  // Timer controls
   const startTimer = useCallback(() => {
     if (timeLeft > 0) {
       setIsCounting(true);
@@ -113,12 +82,44 @@ function Meditation() {
     setMounted(true);
   }, []);
 
+  // Timer effects
+  useEffect(() => {
+    if (isCounting && timeLeft > 0) {
+      const interval = setInterval(
+        () => setTimeLeft((prevTime) => prevTime - 1),
+        1000
+      );
+      return () => clearInterval(interval);
+    } else if (timeLeft === 0 && !timerEnded && !resetting && mounted) {
+      setTimerEnded(true);
+    }
+  }, [isCounting, timeLeft, timerEnded, resetting, mounted]);
+
+  // End sound setup
+  useEffect(() => {
+    const newEndSound = new Audio("/audios/timer-end.mp3");
+    setEndSound(newEndSound);
+    return () => newEndSound.pause(); // Cleanup
+  }, []);
+
+  // Play end sound when timer ends
+  useEffect(() => {
+    if (timerEnded && endSound) {
+      endSound.play();
+    }
+  }, [timerEnded, endSound]);
+
+  // Reset completion
   useEffect(() => {
     if (resetting) {
       const timeout = setTimeout(() => setResetting(false), 500);
       return () => clearTimeout(timeout);
     }
   }, [resetting]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8 ml-16 md:ml-20">

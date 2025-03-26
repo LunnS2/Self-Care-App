@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { Doc } from "../../../convex/_generated/dataModel";
 
 const Shop = () => {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -28,8 +29,12 @@ const Shop = () => {
       });
 
       setMessage(`Congratulations! You received a gift: ${giftUrl}`);
-    } catch (error: any) {
-      setMessage(error.message || "An error occurred while buying the gift.");
+    } catch (error: unknown) {
+      setMessage(
+        error instanceof Error 
+          ? error.message 
+          : "An error occurred while buying the gift."
+      );
     } finally {
       setLoading(false);
     }

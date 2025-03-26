@@ -10,6 +10,13 @@ type Challenge = {
   description: string;
 };
 
+// Added type for the challenge data in the JSON file
+type JsonChallenge = {
+  category: string;
+  difficulty: string;
+  description: string;
+};
+
 const DailyChallenge = () => {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const [selectedDifficulty, setSelectedDifficulty] = useState<
@@ -23,7 +30,7 @@ const DailyChallenge = () => {
 
   const getRandomChallenge = () => {
     const filteredChallenges = challenges.filter(
-      (ch: any) => ch.difficulty === selectedDifficulty
+      (ch: JsonChallenge) => ch.difficulty === selectedDifficulty
     );
     const randomChallenge =
       filteredChallenges[Math.floor(Math.random() * filteredChallenges.length)];
