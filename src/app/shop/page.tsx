@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { Doc } from "../../../convex/_generated/dataModel";
 
 const Shop = () => {
   const { isAuthenticated, isLoading } = useConvexAuth();
