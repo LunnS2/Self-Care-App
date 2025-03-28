@@ -34,10 +34,6 @@ export default function Home() {
 
         {/* Main Content Section */}
         <section className="text-center">
-          <p className="text-base md:text-lg text-muted-foreground mb-4">
-            Take a moment for yourself. Explore resources that help you unwind,
-            reflect, and grow.
-          </p>
           <SignInButton mode="redirect">
             <button className="bg-primary hover:bg-primary/80 text-primary-foreground font-semibold py-2 px-6 rounded-full text-sm md:text-base">
               Start Your Journey
