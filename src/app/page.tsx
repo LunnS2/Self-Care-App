@@ -12,7 +12,7 @@ export default function Home() {
         {/* Logo */}
         <div className="flex items-center justify-center mb-6 md:mb-8">
           <Image
-            src="/self-care-logo.svg"
+            src="/self-care-app-logo.svg"
             alt="Self-care logo"
             width={56}
             height={56}
