@@ -11,17 +11,19 @@ const Shop = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const getMe = useQuery(api.users.getMe);
-  
-  const gifts = useQuery(api.gifts.getByUser, 
-    getMe?._id ? { userId: getMe._id } : "skip"
-  ) ?? [];
+
+  const gifts =
+    useQuery(
+      api.gifts.getByUser,
+      getMe?._id ? { userId: getMe._id } : "skip"
+    ) ?? [];
 
   const buyGift = useMutation(api.users.buyGift);
 
   useEffect(() => {
     if (gifts.length > 1) {
       const interval = setInterval(() => {
-        setActiveIndex(prev => (prev + 1) % gifts.length);
+        setActiveIndex((prev) => (prev + 1) % gifts.length);
       }, 3000);
       return () => clearInterval(interval);
     }
@@ -46,8 +48,8 @@ const Shop = () => {
       setMessage(`Congratulations! You received a gift: ${giftUrl}`);
     } catch (error: unknown) {
       setMessage(
-        error instanceof Error 
-          ? error.message 
+        error instanceof Error
+          ? error.message
           : "An error occurred while buying the gift."
       );
     } finally {
@@ -63,7 +65,9 @@ const Shop = () => {
         <p className="text-muted">Loading user data...</p>
       ) : (
         <div className="text-center bg-card p-6 rounded-lg shadow-lg w-full max-w-lg">
-          <p className="text-lg font-semibold mb-4">Points: {getMe.points ?? 0}</p>
+          <p className="text-lg font-semibold mb-4">
+            Points: {getMe.points ?? 0}
+          </p>
 
           <button
             onClick={handleBuyGift}
@@ -97,12 +101,12 @@ const Shop = () => {
           {gifts.length > 0 && (
             <div className="mt-8">
               <h2 className="text-xl font-bold mb-4">Your Gift Collection</h2>
-              <div className="relative h-64 w-64 mx-auto overflow-hidden rounded-lg">
+              <div className="relative w-full aspect-[1/1] max-w-xs sm:max-w-sm mx-auto overflow-hidden rounded-lg">
                 {gifts.map((gift, index) => (
                   <div
                     key={gift._id}
                     className={`absolute inset-0 transition-opacity duration-500 ${
-                      index === activeIndex ? 'opacity-100' : 'opacity-0'
+                      index === activeIndex ? "opacity-100" : "opacity-0"
                     }`}
                   >
                     <div className="relative w-full h-full">
@@ -110,7 +114,7 @@ const Shop = () => {
                         src={gift.url}
                         alt={`Gift ${index + 1}`}
                         fill
-                        sizes="(max-width: 768px) 100vw, 256px"
+                        sizes="(max-width: 640px) 100vw, 256px"
                         className="object-cover"
                         priority={index === 0}
                       />
@@ -130,7 +134,7 @@ const Shop = () => {
                     key={index}
                     onClick={() => setActiveIndex(index)}
                     className={`w-3 h-3 rounded-full ${
-                      activeIndex === index ? 'bg-primary' : 'bg-muted'
+                      activeIndex === index ? "bg-primary" : "bg-muted"
                     }`}
                   />
                 ))}

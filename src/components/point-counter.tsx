@@ -12,7 +12,7 @@ const PointCounter = () => {
   }
 
   return (
-    <div className="p-2 absolute top-0 mt-2 left-1/2 transform -translate-x-1/2 rounded-md bg-card border border-border flex items-center">
+    <div className="p-2 fixed bottom-0 m-2 right-0 rounded-md bg-card border border-border flex items-center">
       <span className="text-primary font-bold text-lg">Points:&nbsp;</span>
       <span className="text-xl font-semibold text-foreground">
         {getMe?.points ?? 0}
