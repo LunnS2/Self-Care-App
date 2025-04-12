@@ -109,50 +109,34 @@ export const getMe = query({
 	},
 });
 
-//
-
-/* export const awardPoints = mutation({
-  args: { tokenIdentifier: v.string(), points: v.number() },
-  handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
-      .unique();
-
-    if (!user) {
-      throw new ConvexError("User not found");
-    }
-
-    const newPoints = (user.points ?? 0) + args.points;
-    await ctx.db.patch(user._id, { points: newPoints });
-  },
-}); */
-
 export const buyGift = mutation({
   args: { tokenIdentifier: v.string(), cost: v.number() },
   handler: async (ctx, args) => {
     const user = await ctx.db
       .query("users")
-      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .withIndex("by_tokenIdentifier", q => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
-    if (!user) {
-      throw new ConvexError("User not found");
-    }
-
-    if ((user.points ?? 0) < args.cost) {
-      throw new ConvexError("Not enough points");
-    }
+    if (!user) throw new ConvexError("User not found");
+    if ((user.points ?? 0) < args.cost) throw new ConvexError("Not enough points");
 
     const availableImages = [
-      "image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg",
+      "cat-image-1.jpg", "cat-image-2.jpg", "cat-image-3.jpg", "cat-image-4.jpg", "cat-image-5.jpg", "cat-image-6.jpg", "cat-image-7.jpg", "cat-image-8.jpg", "cat-image-9.jpg", "cat-image-10.jpg", "cat-image-11.jpg", "cat-image-12.jpg", "cat-image-13.jpg", "cat-image-14.jpg", "cat-image-15.jpg", "cat-image-16.jpg", "cat-image-17.jpg", "cat-image-18.jpg", "cat-image-19.jpg", "cat-image-20.jpg", "cat-image-21.jpg", "cat-image-22.jpg"
     ];
 
-    if (availableImages.length === 0) throw new ConvexError("No gifts available");
-
     const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
-    await ctx.db.patch(user._id, { points: (user.points ?? 0) - args.cost });
+    const giftUrl = `/pictures/mental-health/${randomImage}`;
 
-    return `/pictures/mental-health/${randomImage}`;
+    await ctx.db.insert("gifts", {
+      url: giftUrl,
+      userId: user._id,
+      claimedAt: Date.now()
+    });
+
+    await ctx.db.patch(user._id, { 
+      points: (user.points ?? 0) - args.cost 
+    });
+
+    return giftUrl;
   },
 });

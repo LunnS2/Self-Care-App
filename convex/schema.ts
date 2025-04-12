@@ -1,5 +1,3 @@
-//self-care-app\convex\schema.ts
-
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
@@ -28,4 +26,10 @@ export default defineSchema({
     createdBy: v.optional(v.id("users")),
     createdAt: v.optional(v.number()),
   }).index("by_createdBy", ["createdBy"]),
+
+  gifts: defineTable({
+    url: v.string(),
+    userId: v.id("users"),
+    claimedAt: v.number(),
+  }).index("by_user", ["userId"]),
 });
