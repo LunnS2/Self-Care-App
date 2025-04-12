@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import SideBar from "@/components/side-bar";
 import ConvexClientProvider from "@/providers/convex-client-provider";
 import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
-import PointCounter from "@/components/point-counter";
 
 export const metadata: Metadata = {
   title: "Self-Care-App",
@@ -23,7 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             disableTransitionOnChange
           >
             <ConvexClientProvider>
-              <PointCounter />
               {children}
               <SideBar />
               <header className="fixed top-0 right-0 p-2">
