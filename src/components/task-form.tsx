@@ -72,7 +72,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
           className="h-5 w-5 text-primary focus:ring-primary/70 border-muted rounded"
         />
         <label htmlFor="recurring" className="ml-2 text-sm font-medium text-foreground">
-          Recurring Task
+          Daily Task
         </label>
       </div>
 
