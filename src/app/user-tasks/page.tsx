@@ -27,9 +27,11 @@ const UserTasks = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8 ml-16 md:ml-20">
       <h1 className="text-3xl md:text-4xl font-bold mb-8">Your Tasks</h1>
-
+      <p className="text-base md:text-lg text-muted-foreground">
+        complete tasks to earn points.
+      </p>
       <button
-        className="top-0 bg-primary text-primary-foreground font-medium px-4 py-2 rounded hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 mb-4"
+        className="top-0 bg-primary text-primary-foreground font-medium px-4 py-2 rounded hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 m-4"
         onClick={() => router.push("/create-task")}
       >
         Add More Tasks
@@ -73,7 +75,7 @@ const UserTasks = () => {
           </div>
         ))
       ) : (
-        <p className="text-base md:text-lg text-muted-foreground mt-4">
+        <p className="text-base md:text-lg text-muted-foreground">
           No tasks found. Create one to get started!
         </p>
       )}
