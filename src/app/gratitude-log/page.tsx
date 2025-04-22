@@ -19,9 +19,7 @@ const GratitudeLog: React.FC = () => {
     const storedGratitudes = localStorage.getItem("gratitudes");
     if (storedGratitudes) {
       const parsedGratitudes = JSON.parse(storedGratitudes);
-      setGratitudes(
-        parsedGratitudes.map((g: GratitudeItem) => ({ ...g, visible: false }))
-      );
+      setGratitudes(parsedGratitudes);
     }
   }, []);
 
