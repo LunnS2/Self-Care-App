@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import TaskForm from "@/components/task-form";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -11,9 +11,30 @@ const CreateTaskPage = () => {
   const addTaskMutation = useMutation(api.tasks.addTask);
   const me = useQuery(api.users.getMe);
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (isLoading || !isAuthenticated) {
-    return null;
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-muted-foreground">Please sign in to create tasks</p>
+      </div>
+    );
+  }
+
+  if (!me) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-muted-foreground">Loading user data...</p>
+      </div>
+    );
   }
 
   const handleTaskSubmit = async (
@@ -22,21 +43,23 @@ const CreateTaskPage = () => {
     recurring: boolean
   ) => {
     try {
-      const lastCompleted = recurring ? Date.now() : undefined;
+      setIsSubmitting(true);
+      const lastCompleted = undefined;
 
       await addTaskMutation({
         title,
         content,
-        createdBy: me!._id,
+        createdBy: me._id,
         recurring,
         lastCompleted,
       });
 
-      alert("Task created successfully!");
       router.push("/user-tasks");
     } catch (error) {
       console.error("Error creating task:", error);
       alert("Failed to create task.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -52,7 +75,7 @@ const CreateTaskPage = () => {
         <p className="text-base md:text-lg text-muted-foreground text-center mb-4">
           Organize your tasks and prioritize your well-being.
         </p>
-        <TaskForm onSubmit={handleTaskSubmit} />
+        <TaskForm onSubmit={handleTaskSubmit} isSubmitting={isSubmitting} />
       </div>
     </main>
   );

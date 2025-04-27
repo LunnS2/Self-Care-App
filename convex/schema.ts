@@ -9,6 +9,7 @@ export default defineSchema({
     tokenIdentifier: v.string(),
     isOnline: v.boolean(),
     points: v.optional(v.number()),
+    timezone: v.optional(v.string()),
   }).index("by_tokenIdentifier", ["tokenIdentifier"]),
 
   tasks: defineTable({

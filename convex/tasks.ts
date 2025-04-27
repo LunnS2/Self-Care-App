@@ -1,7 +1,7 @@
 // self-care-app\convex\tasks.ts
 
 import { ConvexError, v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 
 // Add a New Task
 export const addTask = mutation({
@@ -10,7 +10,7 @@ export const addTask = mutation({
     content: v.string(),
     createdBy: v.id("users"),
     recurring: v.boolean(),
-    lastCompleted: v.optional(v.number()), 
+    lastCompleted: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -112,36 +112,42 @@ export const completeTask = mutation({
   },
 });
 
-// Regenerate Recurring Tasks
-export const regenerateRecurringTasks = mutation({
-  args: {},
+export const regenerateRecurringTasks = internalMutation({
   handler: async (ctx) => {
-    const now = new Date();
-    
-    // Get the current date at 4 AM (in the local timezone)
-    const fourAM = new Date(now.setHours(4, 0, 0, 0));
+    const users = await ctx.db.query("users").collect();
+    const now = Date.now();
 
-    const recurringTasks = await ctx.db
-      .query("tasks")
-      .filter((q) =>
-        q.and(
-          q.eq(q.field("recurring"), true),
-          q.or(
-            q.lte(q.field("lastCompleted"), fourAM.getTime()),
-            q.eq(q.field("lastCompleted"), undefined)
+    for (const user of users) {
+      const userTimezone = user.timezone || "UTC";
+
+      const userTasks = await ctx.db
+        .query("tasks")
+        .withIndex("by_createdBy", (q) => q.eq("createdBy", user._id))
+        .filter((q) =>
+          q.and(
+            q.eq(q.field("recurring"), true),
+            q.eq(q.field("completed"), true)
           )
         )
-      )
-      .collect();
+        .collect();
 
-    for (const task of recurringTasks) {
-      try {
-        await ctx.db.patch(task._id, {
-          completed: false,
-          lastCompleted: fourAM.getTime(),
-        });
-      } catch (error) {
-        console.error(`Failed to regenerate task ${task._id}:`, error);
+      for (const task of userTasks) {
+        if (!task.lastCompleted) continue;
+
+        const lastCompletedDate = new Date(task.lastCompleted);
+        const lastCompletedDay = new Date(
+          lastCompletedDate.getFullYear(),
+          lastCompletedDate.getMonth(),
+          lastCompletedDate.getDate()
+        ).getTime();
+
+        const fourAMAfterLastCompleted = lastCompletedDay + (4 * 60 * 60 * 1000);
+
+        if (now > fourAMAfterLastCompleted) {
+          await ctx.db.patch(task._id, {
+            completed: false
+          });
+        }
       }
     }
   },
