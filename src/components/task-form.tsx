@@ -42,14 +42,14 @@ const TaskForm: React.FC<TaskFormProps> = ({
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          maxLength={30}
+          maxLength={35}
           className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="Enter task title"
           required
           disabled={isSubmitting}
         />
         <p className="text-sm text-muted-foreground">
-          {title.length}/30 characters
+          {title.length}/35 characters
         </p>
       </div>
 
@@ -65,14 +65,14 @@ const TaskForm: React.FC<TaskFormProps> = ({
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          maxLength={35}
+          maxLength={100}
           className="w-full px-4 py-2 mb-4 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="Describe your task here"
           required
           disabled={isSubmitting}
         />
         <p className="text-sm text-muted-foreground">
-          {content.length}/35 characters
+          {content.length}/100 characters
         </p>
       </div>
 
